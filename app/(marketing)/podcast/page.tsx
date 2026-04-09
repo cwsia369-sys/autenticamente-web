@@ -322,7 +322,7 @@ export default function PodcastPage() {
             {/* CTA derecha */}
             <div className="flex flex-col gap-3 items-start lg:items-end">
               <a
-                href={featured.spotifyUrl ?? "#"}
+                href={"#"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-3 px-7 py-4 transition-all duration-200"
@@ -475,7 +475,7 @@ export default function PodcastPage() {
                   >
                     <PlayIcon size={15} color="#54132B" />
                     <a
-                      href={ep.spotifyUrl ?? "#"}
+                      href={"#"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[10.5px] font-body font-bold uppercase tracking-[0.14em]"

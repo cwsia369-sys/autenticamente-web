@@ -1,26 +1,268 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ═══════════════════════════════════════════════════════════
+   AUTÉNTICAMENTE® — Design Tokens
+   Fuente: Brand Guidelines marzo 2026 @duocreativestudio_
+   ═══════════════════════════════════════════════════════════ */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  /* ── AuténticaMente Primaria ─────────────────────────────── */
+  --color-am-bg:        #F9F4F1;   /* Background White */
+  --color-am-bg-soft:   #FAF9F9;   /* Hint of Red (variante sutil) */
+  --color-am-black:     #000000;   /* Black — texto principal */
+  --color-am-burgundy:  #54132B;   /* Intense Burgundy — acento principal / CTAs */
+  --color-am-brown:     #928178;   /* Faded Brown — textos secundarios */
+
+  /* ── AuténticaMente Secundaria ───────────────────────────── */
+  --color-am-cream:     #F4E7E9;   /* Sugar Cream — secciones alternas */
+  --color-am-white:     #FFFFFF;   /* Full White */
+  --color-am-blue-soft: #F0F4FD;   /* Brightest White — contraste frío */
+  --color-am-green:     #425546;   /* Sloth — oscuro alternativo */
+
+  /* ── Liset Valencia Primaria ─────────────────────────────── */
+  --color-lv-bg:        #E6E4D8;   /* Plaster of Paris — bg principal */
+  --color-lv-white:     #FFFFFF;   /* Full White */
+  --color-lv-black:     #000000;   /* Black — texto principal */
+  --color-lv-silver:    #E3E5E8;   /* Sterling Silver */
+  --color-lv-brown:     #928178;   /* Faded Brown — acento / secundario */
+
+  /* ── Liset Valencia Secundaria ───────────────────────────── */
+  --color-lv-sandstone: #DACFBB;   /* Sandstone — bg secciones */
+  --color-lv-ivory:     #978F83;   /* Egyptian Grey / Ivory */
+
+  /* ── Tipografías ─────────────────────────────────────────── */
+  /* AuténticaMente */
+  --font-am-display: var(--font-syne), 'Polymath Display', Georgia, serif;
+  /* NOTA: Polymath Display es fuente comercial. Syne actúa como placeholder.
+     Reemplazar con la fuente real cuando se tengan los archivos .woff2 */
+  --font-am-body:    var(--font-instrument), 'Instrument Sans', system-ui, sans-serif;
+  --font-am-detail:  var(--font-mynerve), 'Mynerve', cursive;
+
+  /* Liset Valencia */
+  --font-lv-display: var(--font-bellefair), 'Bellefair', Georgia, serif;
+  --font-lv-secondary: var(--font-playfair), 'Playfair Display', serif;
+  --font-lv-body:    var(--font-dm-sans), 'Creato Display', system-ui, sans-serif;
+  /* NOTA: Creato Display es fuente comercial. DM Sans actúa como placeholder. */
+  --font-lv-detail:  'Mona Sans', 'Hubot Sans', system-ui, sans-serif;
+
+  /* ── Espaciado ───────────────────────────────────────────── */
+  --spacing-section:    clamp(64px, 9vw, 128px);
+  --max-width-content:  1100px;
+  --max-width-wide:     1280px;
+  --max-width-narrow:   720px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ═══════════════════════════════════════════════════════════
+   BASE — AuténticaMente (sitio activo)
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  --background: #F9F4F1;
+  --foreground: #000000;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background:               var(--background);
+  color:                    var(--foreground);
+  font-family:              var(--font-am-body);
+  -webkit-font-smoothing:   antialiased;
+  -moz-osx-font-smoothing:  grayscale;
+}
+
+/* ── Utilidades tipográficas ─────────────────────────────── */
+.font-display  { font-family: var(--font-am-display);  }
+.font-body     { font-family: var(--font-am-body);     }
+.font-detail   { font-family: var(--font-mynerve), cursive; }
+
+/* ── Navbar ──────────────────────────────────────────────── */
+
+/* Nav links — desktop */
+.nav-item {
+  position: relative;
+  color: rgba(0,0,0,0.52);
+  transition: color 0.2s ease;
+  text-decoration: none;
+}
+.nav-item:hover { color: #54132B; }
+
+/* Underline — expands from center */
+.nav-line {
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background-color: #54132B;
+  transform: translateX(-50%);
+  transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-item:hover .nav-line { width: 100%; }
+
+/* Dropdown rows */
+.dropdown-row {
+  color: rgba(0,0,0,0.52);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+.dropdown-row:hover {
+  color: #54132B;
+  background-color: rgba(84,19,43,0.05);
+}
+
+/* Lang toggle */
+.lang-btn {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.30);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+.lang-btn:hover { color: #54132B; }
+
+/* CTA pill */
+.cta-pill {
+  display: inline-block;
+  background-color: #54132B;
+  color: #FFFFFF;
+  border-radius: 2px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.22s ease,
+              box-shadow 0.22s ease,
+              transform 0.18s ease;
+}
+.cta-pill:hover {
+  background-color: #3e0e20;
+  box-shadow: 0 6px 22px rgba(84,19,43,0.38);
+  transform: translateY(-1px);
+}
+.cta-pill:active { transform: translateY(0); box-shadow: none; }
+
+/* Legacy aliases (keep for any existing usage) */
+.nav-link { color: rgba(0,0,0,0.52); transition: color 0.2s ease; text-decoration: none; }
+.nav-link:hover { color: #54132B; }
+.nav-underline { position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background-color: #54132B; transition: width 0.3s cubic-bezier(0.4,0,0.2,1); }
+.nav-link:hover .nav-underline { width: 100%; }
+.nav-cta { display: inline-block; background-color: #54132B !important; color: #FFFFFF !important; border-radius: 2px; text-decoration: none; transition: box-shadow 0.22s ease, transform 0.18s ease; }
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(84,19,43,0.36); }
+.nav-cta:active { transform: translateY(0); }
+
+/* ── Pillar section responsive borders ───────────────────── */
+.pillar-item {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+@media (min-width: 768px) {
+  .pillar-item {
+    border-bottom: none;
+  }
+  .pillar-item:not(:last-child) {
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+}
+
+/* ── Botones ─────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-block;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.22s ease;
+  text-decoration: none;
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(84,19,43,0.35);
+}
+.btn-primary:active { transform: translateY(-1px); }
+
+.btn-ghost {
+  display: inline-block;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease;
+  text-decoration: none;
+}
+.btn-ghost:hover {
+  transform: translateY(-2px);
+  background-color: rgba(0,0,0,0.04) !important;
+}
+
+/* ── Animaciones ─────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-title {
+  animation: fadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.fade-in {
+  animation: fadeIn 0.6s ease both;
+}
+
+/* ── Cards ───────────────────────────────────────────────── */
+.program-card {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s ease;
+}
+.program-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+}
+
+.pillar-card {
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.28s ease;
+}
+.pillar-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(84,19,43,0.3) !important;
+}
+
+.biblio-card {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.35s ease;
+}
+.biblio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 44px rgba(0,0,0,0.08);
+}
+
+.biblio-buy-btn {
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.22s ease;
+}
+.biblio-buy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(84,19,43,0.28);
+}
+
+/* ── Foto con reveal de color ────────────────────────────── */
+.photo-liset { filter: grayscale(100%); transition: filter 0.6s ease; }
+.photo-liset-wrapper:hover .photo-liset { filter: grayscale(0%); }
+
+/* ── Floating assistant ──────────────────────────────────── */
+.floating-bubble:hover {
+  transform: translateY(-4px) scale(1.06) !important;
+  box-shadow: 0 14px 32px rgba(84,19,43,0.45), 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+.floating-bubble:active { transform: scale(0.95) !important; }
+.assistant-action:hover { transform: translateX(3px); }
+
+/* ── Utilidades ──────────────────────────────────────────── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+.lv-focus-ring:focus-visible {
+  outline: 2px solid #54132B;
+  outline-offset: 3px;
 }

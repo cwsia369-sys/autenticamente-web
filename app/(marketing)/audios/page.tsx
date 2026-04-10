@@ -459,7 +459,7 @@ export default function AudiosPage() {
                 letterSpacing: "-0.03em",
               }}
             >
-              $27
+              $99
             </p>
             <p className="font-body mt-2" style={{ fontSize: "14px", color: "rgba(249,244,241,0.35)", fontWeight: 400 }}>
               {lang === "es" ? "al mes · Cancela cuando quieras" : "per month · Cancel anytime"}

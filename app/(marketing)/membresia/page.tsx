@@ -192,7 +192,7 @@ function MembershipCard({ lang }: { lang: string }) {
         </div>
         <div className="text-right">
           <p className="font-display text-[28px]" style={{ color: "#F9F4F1", fontWeight: 200, lineHeight: 1 }}>
-            $27
+            $99
           </p>
           <p className="font-body text-[9px] uppercase tracking-[0.15em]" style={{ color: "rgba(249,244,241,0.4)" }}>
             / {lang === "es" ? "mes" : "month"}
@@ -301,7 +301,7 @@ export default function MembresiaPage() {
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 3L9.5 7L5.5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </a>
             <p className="font-body text-[11px]" style={{ color: "rgba(249,244,241,0.25)" }}>
-              {lang === "es" ? "$27 USD / mes · Cancela cuando quieras" : "$27 USD / month · Cancel anytime"}
+              {lang === "es" ? "$99 USD / mes · Cancela cuando quieras" : "$99 USD / month · Cancel anytime"}
             </p>
           </div>
         </div>
@@ -558,7 +558,7 @@ export default function MembresiaPage() {
           </div>
 
           {/* Price */}
-          <p className="font-display mb-1" style={{ fontSize: "clamp(48px, 6vw, 72px)", fontWeight: 200, lineHeight: 1, color: "#F9F4F1", letterSpacing: "-0.03em" }}>$27</p>
+          <p className="font-display mb-1" style={{ fontSize: "clamp(48px, 6vw, 72px)", fontWeight: 200, lineHeight: 1, color: "#F9F4F1", letterSpacing: "-0.03em" }}>$99</p>
           <p className="font-body mb-10" style={{ fontSize: "13px", color: "rgba(249,244,241,0.35)" }}>
             {lang === "es" ? "al mes · Cancela cuando quieras · Sin compromisos" : "per month · Cancel anytime · No commitments"}
           </p>

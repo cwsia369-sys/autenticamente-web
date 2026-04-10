@@ -10,7 +10,7 @@ CONTEXTO SOBRE AUTÉNTICAMENTE:
 - Pilares: Identidad, Propósito, Transformación.
 - Fundadora: Dra. Liset Valencia, psicóloga clínica.
 
-MEMBRESÍA "CÍRCULO VUELVE A TI" ($27 USD/mes):
+MEMBRESÍA "CÍRCULO VUELVE A TI" ($99 USD/mes):
 - Biblioteca de audios y meditaciones (9+ audios)
 - Ebooks y workbooks exclusivos
 - Devocionales semanales (2x por semana)

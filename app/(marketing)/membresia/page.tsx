@@ -319,23 +319,90 @@ export default function MembresiaPage() {
         </div>
       </div>
 
-      {/* ══════════════════ PROPUESTA ══ */}
-      <section style={{ paddingTop: "clamp(64px,10vw,120px)", paddingBottom: "clamp(64px,10vw,120px)" }} className="px-6">
-        <div className="max-w-[680px] mx-auto text-center space-y-7">
-          <p className="font-body font-semibold uppercase tracking-[0.3em]" style={{ fontSize: "10px", color: "#54132B" }}>
-            {lang === "es" ? "Por qué el Círculo" : "Why the Circle"}
-          </p>
-          <h2 className="font-display" style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 300, lineHeight: 1.15, color: "#0A0A0A" }}>
-            {lang === "es"
-              ? <>El camino de regreso a ti<br /><span className="italic" style={{ color: "#928178" }}>no tiene que ser solitario.</span></>
-              : <>The path back to yourself<br /><span className="italic" style={{ color: "#928178" }}>doesn{"'"}t have to be lonely.</span></>}
-          </h2>
-          <div className="w-10 h-px mx-auto" style={{ backgroundColor: "rgba(84,19,43,0.3)" }} />
-          <p className="font-body leading-relaxed" style={{ fontSize: "clamp(15px, 1.3vw, 17px)", color: "rgba(10,10,10,0.6)", maxWidth: "540px", margin: "0 auto" }}>
-            {lang === "es"
-              ? "El Círculo es un espacio de acompañamiento continuo. No es una app de meditación. No es un grupo genérico. Es un lugar diseñado para que tu proceso tenga sostén — incluso los días donde no tienes energía para buscar."
-              : "The Circle is a space of continuous accompaniment. It's not a meditation app. It's not a generic group. It's a place designed so your process has support — even on the days when you don't have the energy to search."}
-          </p>
+      {/* ══════════════════ PROPUESTA — 3-column visual ══ */}
+      <section className="relative overflow-hidden px-6" style={{ paddingTop: "clamp(80px,12vw,140px)", paddingBottom: "clamp(80px,12vw,140px)", backgroundColor: "#F9F4F1" }}>
+        <div className="max-w-[1100px] mx-auto">
+
+          {/* Header */}
+          <div className="text-center mb-16 space-y-5">
+            <p className="font-body font-semibold uppercase tracking-[0.35em]" style={{ fontSize: "10px", color: "#54132B" }}>
+              {lang === "es" ? "Por qué el Círculo" : "Why the Circle"}
+            </p>
+            <h2 className="font-display" style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 300, lineHeight: 1.1, color: "#0A0A0A", letterSpacing: "-0.02em" }}>
+              {lang === "es"
+                ? <>El camino de regreso a ti<br /><span className="italic" style={{ color: "#7A2040" }}>no tiene que ser solitario.</span></>
+                : <>The path back to yourself<br /><span className="italic" style={{ color: "#7A2040" }}>doesn{"'"}t have to be lonely.</span></>}
+            </h2>
+          </div>
+
+          {/* Three pillars */}
+          <div className="grid md:grid-cols-3 gap-0 border rounded-[4px] overflow-hidden" style={{ borderColor: "rgba(146,129,120,0.2)" }}>
+            {/* Pillar 1 — No es una app */}
+            <div className="relative p-10 lg:p-12 border-b md:border-b-0 md:border-r" style={{ borderColor: "rgba(146,129,120,0.2)", backgroundColor: "#FDFAF8" }}>
+              <div className="mb-6">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#54132B" strokeWidth="1" strokeLinecap="round">
+                  <line x1="18" y1="4" x2="18" y2="32" />
+                  <line x1="4" y1="18" x2="32" y2="18" />
+                  <circle cx="18" cy="18" r="14" strokeDasharray="3 3" />
+                </svg>
+              </div>
+              <p className="font-body text-[9px] uppercase tracking-[0.25em] font-semibold mb-3" style={{ color: "#54132B" }}>
+                {lang === "es" ? "No es una app" : "Not an app"}
+              </p>
+              <h3 className="font-display text-[22px] mb-4" style={{ fontWeight: 300, color: "#0A0A0A", lineHeight: 1.25 }}>
+                {lang === "es" ? "Presencia real." : "Real presence."}
+              </h3>
+              <p className="font-body text-[13px] leading-[1.75]" style={{ color: "#928178" }}>
+                {lang === "es"
+                  ? "No es otra app de meditación con notificaciones genéricas. Es un espacio con contenido creado por la Dra. Valencia, con intención y profundidad clínica."
+                  : "Not another meditation app with generic notifications. It's a space with content created by Dr. Valencia, with intention and clinical depth."}
+              </p>
+            </div>
+
+            {/* Pillar 2 — No es un grupo */}
+            <div className="relative p-10 lg:p-12 border-b md:border-b-0 md:border-r" style={{ borderColor: "rgba(146,129,120,0.2)", backgroundColor: "#FDFAF8" }}>
+              <div className="mb-6">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#54132B" strokeWidth="1" strokeLinecap="round">
+                  <circle cx="18" cy="18" r="6" />
+                  <circle cx="18" cy="18" r="11" strokeDasharray="2 4" />
+                  <circle cx="18" cy="18" r="16" strokeDasharray="1 5" />
+                </svg>
+              </div>
+              <p className="font-body text-[9px] uppercase tracking-[0.25em] font-semibold mb-3" style={{ color: "#54132B" }}>
+                {lang === "es" ? "No es un grupo más" : "Not just a group"}
+              </p>
+              <h3 className="font-display text-[22px] mb-4" style={{ fontWeight: 300, color: "#0A0A0A", lineHeight: 1.25 }}>
+                {lang === "es" ? "Comunidad con sostén." : "Community with support."}
+              </h3>
+              <p className="font-body text-[13px] leading-[1.75]" style={{ color: "#928178" }}>
+                {lang === "es"
+                  ? "No es un grupo genérico de Facebook. Es un espacio íntimo y curado donde cada recurso tiene un propósito en tu proceso de transformación."
+                  : "Not a generic Facebook group. It's an intimate, curated space where every resource has a purpose in your transformation process."}
+              </p>
+            </div>
+
+            {/* Pillar 3 — Es tu lugar */}
+            <div className="relative p-10 lg:p-12" style={{ backgroundColor: "#0A0A0A" }}>
+              <div className="mb-6">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#7A2040" strokeWidth="1" strokeLinecap="round">
+                  <path d="M18 6L18 30" />
+                  <path d="M10 14L18 6L26 14" />
+                  <circle cx="18" cy="30" r="2" fill="#7A2040" stroke="none" />
+                </svg>
+              </div>
+              <p className="font-body text-[9px] uppercase tracking-[0.25em] font-semibold mb-3" style={{ color: "rgba(122,32,64,0.7)" }}>
+                {lang === "es" ? "Es tu lugar" : "It's your place"}
+              </p>
+              <h3 className="font-display text-[22px] mb-4" style={{ fontWeight: 300, color: "#F9F4F1", lineHeight: 1.25 }}>
+                {lang === "es" ? "Diseñado para ti." : "Designed for you."}
+              </h3>
+              <p className="font-body text-[13px] leading-[1.75]" style={{ color: "rgba(249,244,241,0.5)" }}>
+                {lang === "es"
+                  ? "Sostén para los días buenos y para los días donde no tienes energía ni para buscar. Todo en un solo lugar, siempre disponible."
+                  : "Support for the good days and for the days when you don't even have the energy to search. Everything in one place, always available."}
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useLang } from "@/app/providers/LangProvider";
 
@@ -9,6 +9,11 @@ const WHATSAPP_MESSAGE = encodeURIComponent(
   "Hola, quiero información sobre Auténticamente y agendar una consulta."
 );
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
+
+interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
 
 /* ── Inline icon components ─────────────────────────────────── */
 function IconTest() {
@@ -50,18 +55,71 @@ function IconWhatsApp() {
     </svg>
   );
 }
+function IconSpark() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <path d="M6.5 1v3M6.5 9v3M1 6.5h3M9 6.5h3M2.5 2.5l2 2M8.5 8.5l2 2M2.5 10.5l2-2M8.5 4.5l2-2"
+            stroke="currentColor" strokeWidth="0.85" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 /* ─────────────────────────────────────────────────────────── */
 
 export default function FloatingAssistant() {
-  const [open,    setOpen]    = useState(false);
+  const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
-  const { t } = useLang();
+  const [mode, setMode] = useState<"menu" | "chat">("menu");
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { t, lang } = useLang();
 
   useEffect(() => {
     const timer = setTimeout(() => setVisible(true), 1400);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading]);
+
+  useEffect(() => {
+    if (mode === "chat" && inputRef.current) inputRef.current.focus();
+  }, [mode]);
+
+  const sendMessage = async () => {
+    if (!input.trim() || loading) return;
+    const userMsg: ChatMessage = { role: "user", content: input.trim() };
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
+    setInput("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: newMessages.map((m) => ({ role: m.role, content: m.content })),
+        }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        setMessages([...newMessages, { role: "assistant", content: data.error }]);
+      } else {
+        setMessages([...newMessages, { role: "assistant", content: data.reply }]);
+      }
+    } catch {
+      setMessages([
+        ...newMessages,
+        { role: "assistant", content: lang === "es" ? "Hubo un error. Intenta de nuevo." : "There was an error. Please try again." },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const actions = [
     { key: "assistant.test",     href: WHATSAPP_URL, icon: <IconTest />,      external: false, internal: "/test",                highlight: false },
@@ -79,7 +137,7 @@ export default function FloatingAssistant() {
       {/* ── Panel ── */}
       <div
         style={{
-          maxHeight:     open ? "520px" : "0",
+          maxHeight:     open ? (mode === "chat" ? "580px" : "560px") : "0",
           opacity:       open ? 1 : 0,
           pointerEvents: open ? "auto" : "none",
           overflow:      "hidden",
@@ -87,17 +145,18 @@ export default function FloatingAssistant() {
         }}
       >
         <div
-          className="w-[310px] border"
+          className="w-[340px] border flex flex-col"
           style={{
             backgroundColor: "#F9F4F1",
             borderColor:     "rgba(146,129,120,0.32)",
             borderRadius:    "4px",
             boxShadow:       "0 24px 56px rgba(0,0,0,0.15), 0 6px 16px rgba(0,0,0,0.07)",
+            height:          mode === "chat" ? "560px" : "auto",
           }}
         >
           {/* Header */}
           <div
-            className="px-5 py-4 border-b flex items-start gap-3.5"
+            className="px-5 py-4 border-b flex items-start gap-3.5 shrink-0"
             style={{ borderColor: "rgba(146,129,120,0.22)" }}
           >
             {/* Avatar */}
@@ -111,82 +170,257 @@ export default function FloatingAssistant() {
                 <circle cx="10" cy="10" r="1.5" fill="#F9F4F1" />
               </svg>
             </div>
-            <div className="pt-0.5">
-              <p
-                className="text-[10.5px] font-body font-semibold uppercase tracking-[0.13em] mb-1.5"
-                style={{ color: "#000000" }}
-              >
-                {t("assistant.name")}
-              </p>
+            <div className="pt-0.5 flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1.5">
+                <p
+                  className="text-[10.5px] font-body font-semibold uppercase tracking-[0.13em]"
+                  style={{ color: "#000000" }}
+                >
+                  {t("assistant.name")}
+                </p>
+                {mode === "chat" && (
+                  <span
+                    className="text-[8px] font-body font-bold uppercase tracking-[0.14em] px-1.5 py-0.5"
+                    style={{ backgroundColor: "rgba(84,19,43,0.1)", color: "#54132B", borderRadius: "100px" }}
+                  >
+                    IA
+                  </span>
+                )}
+              </div>
               <p
                 className="text-[13px] font-body leading-[1.65]"
                 style={{ color: "#000000", opacity: 0.72 }}
               >
-                {t("assistant.message")}
+                {mode === "chat"
+                  ? (lang === "es" ? "Pregúntame lo que quieras sobre AuténticaMente." : "Ask me anything about AuténticaMente.")
+                  : t("assistant.message")}
               </p>
             </div>
+            {mode === "chat" && (
+              <button
+                onClick={() => { setMode("menu"); setMessages([]); }}
+                className="shrink-0 transition-opacity hover:opacity-60"
+                style={{ border: "none", background: "none", cursor: "pointer", padding: "2px" }}
+                aria-label="Volver al menú"
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#928178" strokeWidth="1.3" strokeLinecap="round">
+                  <path d="M9 2L3 7l6 5" />
+                </svg>
+              </button>
+            )}
           </div>
 
-          {/* Action buttons */}
-          <div className="p-4 space-y-2">
-            {actions.map((action) => {
-              const sharedStyle: React.CSSProperties = {
-                backgroundColor: action.highlight ? "#54132B" : "transparent",
-                borderColor:     action.highlight ? "#54132B" : "rgba(146,129,120,0.28)",
-                color:           action.highlight ? "#F9F4F1" : "#000000",
-                borderRadius:    "2px",
-                fontSize:        "13px",
-                fontFamily:      "var(--font-inter, Inter, sans-serif)",
-                fontWeight:      500,
-                letterSpacing:   "0.04em",
-                textDecoration:  "none",
-                display:         "flex",
-                alignItems:      "center",
-                gap:             "10px",
-                width:           "100%",
-                padding:         "11px 14px",
-                transition:      "transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease",
-              };
+          {/* ══════════ MODE: MENU ══════════ */}
+          {mode === "menu" && (
+            <>
+              <div className="p-4 space-y-2">
+                {actions.map((action) => {
+                  const sharedStyle: React.CSSProperties = {
+                    backgroundColor: action.highlight ? "#54132B" : "transparent",
+                    borderColor:     action.highlight ? "#54132B" : "rgba(146,129,120,0.28)",
+                    color:           action.highlight ? "#F9F4F1" : "#000000",
+                    borderRadius:    "2px",
+                    fontSize:        "13px",
+                    fontFamily:      "var(--font-inter, Inter, sans-serif)",
+                    fontWeight:      500,
+                    letterSpacing:   "0.04em",
+                    textDecoration:  "none",
+                    display:         "flex",
+                    alignItems:      "center",
+                    gap:             "10px",
+                    width:           "100%",
+                    padding:         "11px 14px",
+                    transition:      "transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease",
+                  };
 
-              if (!action.external && action.internal) {
-                return (
-                  <Link
-                    key={action.key}
-                    href={action.internal}
-                    className="assistant-action border"
-                    style={sharedStyle}
-                    onClick={() => setOpen(false)}
-                  >
-                    <span style={{ opacity: 0.6 }}>{action.icon}</span>
-                    {t(action.key)}
-                  </Link>
-                );
-              }
-              return (
-                <a
-                  key={action.key}
-                  href={action.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="assistant-action border"
-                  style={sharedStyle}
+                  if (!action.external && action.internal) {
+                    return (
+                      <Link
+                        key={action.key}
+                        href={action.internal}
+                        className="assistant-action border"
+                        style={sharedStyle}
+                        onClick={() => setOpen(false)}
+                      >
+                        <span style={{ opacity: 0.6 }}>{action.icon}</span>
+                        {t(action.key)}
+                      </Link>
+                    );
+                  }
+                  return (
+                    <a
+                      key={action.key}
+                      href={action.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="assistant-action border"
+                      style={sharedStyle}
+                    >
+                      <span style={{ opacity: action.highlight ? 1 : 0.6 }}>{action.icon}</span>
+                      {t(action.key)}
+                    </a>
+                  );
+                })}
+              </div>
+
+              {/* ── Divider ── */}
+              <div className="px-4">
+                <div className="flex items-center gap-3 py-2">
+                  <div className="flex-1 h-px" style={{ backgroundColor: "rgba(146,129,120,0.2)" }} />
+                  <span className="text-[9px] font-body uppercase tracking-[0.18em]" style={{ color: "#928178" }}>
+                    {lang === "es" ? "o" : "or"}
+                  </span>
+                  <div className="flex-1 h-px" style={{ backgroundColor: "rgba(146,129,120,0.2)" }} />
+                </div>
+              </div>
+
+              {/* ── AI Chat trigger ── */}
+              <div className="px-4 pb-4">
+                <button
+                  onClick={() => setMode("chat")}
+                  className="w-full flex items-center gap-2.5 transition-all duration-200"
+                  style={{
+                    padding: "12px 14px",
+                    border: "1px solid rgba(84,19,43,0.25)",
+                    borderRadius: "2px",
+                    backgroundColor: "rgba(84,19,43,0.04)",
+                    color: "#54132B",
+                    cursor: "pointer",
+                    fontFamily: "var(--font-inter, Inter, sans-serif)",
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    letterSpacing: "0.02em",
+                  }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(84,19,43,0.09)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(84,19,43,0.04)"; }}
                 >
-                  <span style={{ opacity: action.highlight ? 1 : 0.6 }}>{action.icon}</span>
-                  {t(action.key)}
-                </a>
-              );
-            })}
-          </div>
+                  <span style={{ color: "#54132B" }}><IconSpark /></span>
+                  <span className="flex-1 text-left">
+                    {lang === "es" ? "Preguntar al asistente IA" : "Ask the AI assistant"}
+                  </span>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#54132B" strokeWidth="1.3" strokeLinecap="round">
+                    <path d="M4 2l4 4-4 4" />
+                  </svg>
+                </button>
+              </div>
 
-          {/* Footer */}
-          <div
-            className="px-5 py-3 border-t"
-            style={{ borderColor: "rgba(146,129,120,0.18)" }}
-          >
-            <p className="text-[10px] font-body tracking-[0.1em] uppercase" style={{ color: "#928178" }}>
-              {t("assistant.footer")}
-            </p>
-          </div>
+              {/* Footer */}
+              <div
+                className="px-5 py-3 border-t"
+                style={{ borderColor: "rgba(146,129,120,0.18)" }}
+              >
+                <p className="text-[10px] font-body tracking-[0.1em] uppercase" style={{ color: "#928178" }}>
+                  {t("assistant.footer")}
+                </p>
+              </div>
+            </>
+          )}
+
+          {/* ══════════ MODE: CHAT ══════════ */}
+          {mode === "chat" && (
+            <>
+              {/* Messages area */}
+              <div className="flex-1 overflow-y-auto" style={{ padding: "16px 16px 8px" }}>
+                {messages.length === 0 && (
+                  <div
+                    className="mb-3"
+                    style={{
+                      padding: "12px 14px",
+                      backgroundColor: "rgba(84,19,43,0.06)",
+                      borderRadius: "10px 10px 10px 2px",
+                    }}
+                  >
+                    <p className="font-body text-[13px] leading-[1.6]" style={{ color: "#0A0A0A" }}>
+                      {lang === "es"
+                        ? "Hola 👋 Puedo contarte sobre la membresía Círculo, las conferencias, los audios, o ayudarte a encontrar el recurso adecuado para ti. ¿Qué quieres saber?"
+                        : "Hi 👋 I can tell you about the Circle membership, conferences, audios, or help you find the right resource for you. What would you like to know?"}
+                    </p>
+                  </div>
+                )}
+
+                {messages.map((msg, i) => (
+                  <div
+                    key={i}
+                    className="mb-3"
+                    style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start" }}
+                  >
+                    <div
+                      style={{
+                        maxWidth: "85%",
+                        padding: "10px 14px",
+                        borderRadius:
+                          msg.role === "user"
+                            ? "10px 10px 2px 10px"
+                            : "10px 10px 10px 2px",
+                        backgroundColor:
+                          msg.role === "user" ? "#54132B" : "rgba(84,19,43,0.06)",
+                        color: msg.role === "user" ? "#F9F4F1" : "#0A0A0A",
+                      }}
+                    >
+                      <p className="font-body text-[13px] leading-[1.6]" style={{ whiteSpace: "pre-wrap" }}>
+                        {msg.content}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+                {loading && (
+                  <div className="mb-3" style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <div
+                      style={{
+                        padding: "12px 16px",
+                        borderRadius: "10px 10px 10px 2px",
+                        backgroundColor: "rgba(84,19,43,0.06)",
+                      }}
+                    >
+                      <div className="flex gap-1.5 items-center" style={{ height: "8px" }}>
+                        <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "#928178", animation: "dotPulse 1.4s infinite ease-in-out", animationDelay: "0ms" }} />
+                        <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "#928178", animation: "dotPulse 1.4s infinite ease-in-out", animationDelay: "200ms" }} />
+                        <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "#928178", animation: "dotPulse 1.4s infinite ease-in-out", animationDelay: "400ms" }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+
+              {/* Input bar */}
+              <div
+                className="shrink-0 flex items-center gap-2 border-t"
+                style={{ padding: "12px 14px", borderColor: "rgba(146,129,120,0.18)" }}
+              >
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }}
+                  placeholder={lang === "es" ? "Escribe tu pregunta..." : "Type your question..."}
+                  className="flex-1 outline-none bg-transparent font-body text-[13px]"
+                  style={{ color: "#0A0A0A", padding: "8px 0" }}
+                  disabled={loading}
+                />
+                <button
+                  onClick={sendMessage}
+                  disabled={!input.trim() || loading}
+                  className="shrink-0 flex items-center justify-center transition-opacity"
+                  style={{
+                    width: "34px",
+                    height: "34px",
+                    borderRadius: "50%",
+                    backgroundColor: input.trim() && !loading ? "#54132B" : "rgba(146,129,120,0.15)",
+                    border: "none",
+                    cursor: input.trim() && !loading ? "pointer" : "default",
+                  }}
+                  aria-label="Enviar"
+                >
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M13 1L6 8M13 1L9 13L6 8L1 5L13 1Z" stroke={input.trim() && !loading ? "#F9F4F1" : "#928178"} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -239,6 +473,14 @@ export default function FloatingAssistant() {
           </svg>
         </span>
       </button>
+
+      {/* Keyframes for typing indicator */}
+      <style jsx>{`
+        @keyframes dotPulse {
+          0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); }
+          30% { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
     </div>
   );
 }

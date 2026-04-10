@@ -84,11 +84,11 @@ export default function Navbar() {
             style={{ height: scrolled ? "38px" : "76px", width: "auto", opacity: 0.85, transition: "height 0.35s ease, opacity 0.25s ease" }}
           />
           <Image
-            src="/logos/am-icon-black.svg"
+            src={scrolled ? "/logos/am-icon-black.svg" : "/logos/am-wordmark-black.svg"}
             alt="AuténticaMente®"
-            width={48} height={48} priority
+            width={240} height={80} priority
             className="lg:hidden group-hover:opacity-50 transition-opacity duration-200"
-            style={{ height: "30px", width: "auto", opacity: 0.82 }}
+            style={{ height: scrolled ? "28px" : "52px", width: "auto", opacity: 0.85, transition: "height 0.35s ease, opacity 0.25s ease" }}
           />
         </Link>
 

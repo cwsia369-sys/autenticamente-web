@@ -68,6 +68,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://autenticamente-web.vercel.app"),
   title: "AUTÉNTICAMENTE® — Reconecta contigo y activa tu poder interno",
   description:
     "Plataforma de desarrollo humano con conferencias, comunidad, recursos y experiencias para hombres y mujeres que quieren crecer con más conciencia, verdad y dirección. Por Dra. Liset Valencia.",
@@ -80,6 +81,14 @@ export const metadata: Metadata = {
     title: "AUTÉNTICAMENTE® — Reconecta contigo y activa tu poder interno",
     description: "Plataforma de desarrollo humano para hombres y mujeres que quieren crecer con más conciencia, verdad y dirección.",
     type: "website",
+    url: "https://autenticamente-web.vercel.app",
+    siteName: "AUTÉNTICAMENTE®",
+    locale: "es_ES",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AUTÉNTICAMENTE® — Reconecta contigo y activa tu poder interno",
+    description: "Plataforma de desarrollo humano para hombres y mujeres que quieren crecer con más conciencia, verdad y dirección.",
   },
 };
 

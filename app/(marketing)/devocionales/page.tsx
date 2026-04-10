@@ -6,7 +6,7 @@ import { useLang } from "@/app/providers/LangProvider";
 
 /* ══════════════════════════════════════════════
    CONSTANTES DE JORNADA
-   Inicio: 1 enero 2026  |  3645 días = ~10 años
+   Inicio: 1 enero 2026  |  365 días
 ══════════════════════════════════════════════ */
 const START_DATE = new Date("2026-01-01T00:00:00");
 const TOTAL_DAYS = 365;
@@ -736,7 +736,6 @@ function GeoGrid({ opacity = 0.07 }: { opacity?: number }) {
   );
 }
 
-/* Gradient visual para cada área (reemplaza imagen real) */
 function AreaGradient({ area, size = 320 }: { area: Area; size?: number }) {
   const a = AREAS[area];
   return (
@@ -747,17 +746,12 @@ function AreaGradient({ area, size = 320 }: { area: Area; size?: number }) {
         position: "relative", overflow: "hidden",
       }}
     >
-      {/* Pattern lines */}
       <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.12 }}>
         {Array.from({ length: 8 }).map((_, i) => (
           <line key={i} x1={`${(i/7)*120-10}%`} y1="0" x2={`${(i/7)*120-10}%`} y2="100%" stroke="#fff" strokeWidth="0.8"/>
         ))}
       </svg>
-      {/* Area watermark */}
-      <div
-        className="absolute inset-0 flex items-center justify-center"
-        style={{ opacity: 0.08 }}
-      >
+      <div className="absolute inset-0 flex items-center justify-center" style={{ opacity: 0.08 }}>
         <span style={{ fontSize: "120px", color: "#fff", fontFamily: "var(--font-am-display)", fontWeight: 300 }}>
           {AREAS[area].label[0]}
         </span>
@@ -776,131 +770,268 @@ function LockIcon() {
 }
 
 /* ══════════════════════════════════════════════
-   FEATURED DEVOTIONAL CARD
+   AUDIO PLAYER MOCK
+══════════════════════════════════════════════ */
+function AudioPlayer({ color }: { color: string }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const barHeights = [35, 55, 45, 70, 50, 80, 45, 60, 38, 65, 42, 58];
+
+  return (
+    <div className="flex items-center gap-4">
+      {/* Play/Pause button */}
+      <button
+        onClick={() => setIsPlaying((v) => !v)}
+        className="flex-shrink-0 flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+        style={{
+          width: 44, height: 44,
+          borderRadius: "50%",
+          backgroundColor: color,
+          border: "none",
+          cursor: "pointer",
+        }}
+        aria-label={isPlaying ? "Pausar" : "Reproducir"}
+      >
+        {isPlaying ? (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
+            <rect x="6" y="5" width="4" height="14" rx="1"/>
+            <rect x="14" y="5" width="4" height="14" rx="1"/>
+          </svg>
+        ) : (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff" style={{ marginLeft: 2 }}>
+            <polygon points="5,3 19,12 5,21"/>
+          </svg>
+        )}
+      </button>
+
+      {/* Waveform */}
+      <div className="flex items-center gap-[3px]" style={{ height: 36 }}>
+        {barHeights.map((h, i) => (
+          <div
+            key={i}
+            style={{
+              width: 3,
+              height: `${h}%`,
+              backgroundColor: color,
+              opacity: isPlaying ? 1 : 0.45,
+              borderRadius: 2,
+              animation: isPlaying ? `waveBar ${0.6 + (i % 4) * 0.15}s ease-in-out infinite alternate` : "none",
+              animationDelay: `${i * 0.05}s`,
+              transformOrigin: "center",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Progress track */}
+      <div className="flex-1 min-w-0 space-y-1.5">
+        <div className="h-0.5 w-full rounded-full" style={{ backgroundColor: "rgba(249,244,241,0.12)" }}>
+          <div className="h-full rounded-full" style={{ width: isPlaying ? "35%" : "0%", backgroundColor: color, transition: "width 0.5s linear" }} />
+        </div>
+        <div className="flex justify-between">
+          <span className="text-[10px] font-body" style={{ color: "rgba(249,244,241,0.3)" }}>
+            {isPlaying ? "1:17" : "0:00"}
+          </span>
+          <span className="text-[10px] font-body" style={{ color: "rgba(249,244,241,0.3)" }}>3:45</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   SECTION DIVIDER LABEL
+══════════════════════════════════════════════ */
+function SectionLabel({ label, color }: { label: string; color: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-4">
+      <div className="h-px flex-1" style={{ backgroundColor: `${color}30` }} />
+      <span className="text-[9px] uppercase tracking-[0.3em] font-body font-semibold flex-shrink-0" style={{ color }}>
+        {label}
+      </span>
+      <div className="h-px flex-1" style={{ backgroundColor: `${color}30` }} />
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   FEATURED DEVOTIONAL CARD (redesigned)
 ══════════════════════════════════════════════ */
 function FeaturedCard({ dayNum, isToday, lang }: { dayNum: number; isToday: boolean; lang: string }) {
   const es   = lang === "es";
   const dev  = getDevocional(dayNum);
   const area = AREAS[dev.area];
   const date = dateForDay(dayNum);
-  const dateStr = date.toLocaleDateString(es ? "es-ES" : "en-US", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const dateStr = date.toLocaleDateString(es ? "es-ES" : "en-US", {
+    weekday: "long", day: "numeric", month: "long", year: "numeric",
+  });
+
+  // Conclusion derived from action rephrased as a statement
+  const conclusion = es
+    ? `Cada paso en la dirección correcta es ya la respuesta. ${dev.action.split(".")[0]}.`
+    : `Every step in the right direction is already the answer. ${dev.actionEN.split(".")[0]}.`;
+
+  // Second reflection paragraph — a deepening of the theme
+  const reflection2 = es
+    ? `Cuando permitimos que esta verdad arraigue en nosotras, el cambio no viene de la fuerza sino de la comprensión. ${es ? dev.theme : dev.themeEN} no es solo un concepto — es una práctica diaria que transforma desde adentro.`
+    : `When we allow this truth to take root in us, change comes not from force but from understanding. ${dev.themeEN} is not just a concept — it is a daily practice that transforms from within.`;
 
   return (
-    <div
-      className="overflow-hidden"
-      style={{ backgroundColor: "#111111", border: "1px solid rgba(255,255,255,0.06)" }}
-    >
-      {/* Image area */}
-      <div className="relative">
-        <AreaGradient area={dev.area} size={340} />
-        {/* Top badges */}
-        <div className="absolute top-5 left-5 flex items-center gap-2">
-          <span
-            className="px-3 py-1 text-[9px] uppercase tracking-[0.22em] font-body font-semibold"
-            style={{ backgroundColor: area.color, color: "#fff" }}
-          >
-            {es ? area.label : area.labelEN}
-          </span>
-          {isToday && (
+    <>
+      <style>{`
+        @keyframes waveBar {
+          from { transform: scaleY(0.4); }
+          to   { transform: scaleY(1); }
+        }
+      `}</style>
+      <div
+        className="overflow-hidden"
+        style={{ backgroundColor: "#111111", border: "1px solid rgba(255,255,255,0.06)" }}
+      >
+        {/* Gradient image header */}
+        <div className="relative">
+          <AreaGradient area={dev.area} size={260} />
+          {/* Badges */}
+          <div className="absolute top-5 left-5 flex items-center gap-2 flex-wrap">
             <span
               className="px-3 py-1 text-[9px] uppercase tracking-[0.22em] font-body font-semibold"
-              style={{ backgroundColor: "rgba(249,244,241,0.15)", color: "#F9F4F1", border: "1px solid rgba(249,244,241,0.25)" }}
+              style={{ backgroundColor: area.color, color: "#fff" }}
             >
-              {es ? "Hoy" : "Today"}
+              {es ? area.label : area.labelEN}
             </span>
-          )}
+            {isToday && (
+              <span
+                className="px-3 py-1 text-[9px] uppercase tracking-[0.22em] font-body font-semibold"
+                style={{ backgroundColor: "rgba(249,244,241,0.12)", color: "#F9F4F1", border: "1px solid rgba(249,244,241,0.22)" }}
+              >
+                {es ? "Hoy" : "Today"}
+              </span>
+            )}
+          </div>
+          {/* Day counter */}
+          <div className="absolute bottom-5 right-5">
+            <span className="font-body text-[10px] uppercase tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.35)" }}>
+              {es ? `Día ${dayNum} de ${TOTAL_DAYS}` : `Day ${dayNum} of ${TOTAL_DAYS}`}
+            </span>
+          </div>
         </div>
-        {/* Day number */}
-        <div className="absolute bottom-5 right-5">
-          <span
-            className="font-body text-[10px] uppercase tracking-[0.2em]"
-            style={{ color: "rgba(255,255,255,0.35)" }}
-          >
-            {es ? `Día ${dayNum} de ${TOTAL_DAYS}` : `Day ${dayNum} of ${TOTAL_DAYS}`}
-          </span>
+
+        {/* Card body */}
+        <div className="p-7 lg:p-10 space-y-8">
+
+          {/* ── AUDIO ── */}
+          <div>
+            <SectionLabel label={es ? "Audio" : "Audio"} color={area.color} />
+            <div className="space-y-3">
+              <AudioPlayer color={area.color} />
+              <p className="text-[11px] font-body" style={{ color: "rgba(249,244,241,0.3)" }}>
+                {es ? "Escuchar devocional completo" : "Listen to full devotional"}
+              </p>
+            </div>
+          </div>
+
+          {/* ── VERSÍCULO ── */}
+          <div>
+            <SectionLabel label={es ? "Versículo" : "Verse"} color={area.color} />
+            <div className="space-y-3">
+              <p className="text-[10px] uppercase tracking-[0.22em] font-body" style={{ color: area.color }}>
+                {dateStr}
+              </p>
+              <blockquote
+                className="font-display italic leading-[1.55]"
+                style={{
+                  fontSize: "clamp(17px, 2vw, 23px)",
+                  fontWeight: 300,
+                  color: "#F9F4F1",
+                  letterSpacing: "0.01em",
+                  borderLeft: `3px solid ${area.color}`,
+                  paddingLeft: "1.25rem",
+                }}
+              >
+                "{es ? dev.verse : dev.verse}"
+              </blockquote>
+              <p className="text-[11px] font-body uppercase tracking-[0.2em]" style={{ color: area.color }}>
+                — {dev.ref}
+              </p>
+            </div>
+          </div>
+
+          {/* ── INTERPRETACIÓN ── */}
+          <div>
+            <SectionLabel label={es ? "Interpretación" : "Interpretation"} color={area.color} />
+            <div className="space-y-2 mb-4">
+              <p
+                className="font-body text-[13px] font-semibold uppercase tracking-[0.1em]"
+                style={{ color: "rgba(249,244,241,0.55)" }}
+              >
+                {es ? dev.theme : dev.themeEN}
+              </p>
+            </div>
+            <div className="space-y-4">
+              <p className="font-body text-[15px] leading-[1.85]" style={{ color: "rgba(249,244,241,0.72)" }}>
+                {es ? dev.reflection : dev.reflectionEN}
+              </p>
+              <p className="font-body text-[15px] leading-[1.85]" style={{ color: "rgba(249,244,241,0.5)" }}>
+                {reflection2}
+              </p>
+            </div>
+          </div>
+
+          {/* ── CONCLUSIÓN ── */}
+          <div>
+            <SectionLabel label={es ? "Conclusión" : "Conclusion"} color={area.color} />
+            <div
+              className="pl-5 py-1"
+              style={{ borderLeft: `3px solid ${area.color}` }}
+            >
+              <p
+                className="font-display italic leading-[1.65]"
+                style={{
+                  fontSize: "clamp(14px, 1.5vw, 18px)",
+                  fontWeight: 300,
+                  color: "rgba(249,244,241,0.65)",
+                  letterSpacing: "0.01em",
+                }}
+              >
+                {conclusion}
+              </p>
+            </div>
+          </div>
+
+          {/* ── ACCIÓN DEL DÍA ── */}
+          <div>
+            <SectionLabel label={es ? "Acción del día" : "Today's Action"} color={area.color} />
+            <div
+              className="p-5 space-y-2"
+              style={{
+                backgroundColor: `${area.color}14`,
+                border: `1px solid ${area.color}28`,
+              }}
+            >
+              <p className="font-body text-sm leading-relaxed" style={{ color: "rgba(249,244,241,0.7)" }}>
+                {es ? dev.action : dev.actionEN}
+              </p>
+            </div>
+          </div>
+
+          {/* CTA row */}
+          <div className="flex flex-wrap items-center gap-4 pt-1">
+            <Link
+              href="/membresia"
+              className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.12em] font-body font-medium transition-opacity hover:opacity-80"
+              style={{ backgroundColor: area.color, color: "#fff" }}
+            >
+              {es ? "Leer / Escuchar completo" : "Read / Listen in full"}
+              <span>→</span>
+            </Link>
+            <span className="text-[10px] font-body flex items-center gap-1.5" style={{ color: "rgba(249,244,241,0.25)" }}>
+              <LockIcon />
+              {es ? "Requiere membresía" : "Membership required"}
+            </span>
+          </div>
         </div>
       </div>
-
-      {/* Content */}
-      <div className="p-8 lg:p-10 space-y-6">
-        {/* Date */}
-        <p className="text-[10px] uppercase tracking-[0.25em] font-body" style={{ color: area.color }}>
-          {dateStr}
-        </p>
-
-        {/* Verse */}
-        <div className="space-y-2">
-          <blockquote
-            className="font-display italic leading-[1.5]"
-            style={{
-              fontSize:   "clamp(18px, 2.2vw, 26px)",
-              fontWeight: 300,
-              color:      "#F9F4F1",
-              letterSpacing: "0.01em",
-            }}
-          >
-            "{dev.verse}"
-          </blockquote>
-          <p
-            className="text-[11px] font-body uppercase tracking-[0.2em]"
-            style={{ color: area.color }}
-          >
-            — {dev.ref}
-          </p>
-        </div>
-
-        {/* Theme */}
-        <div className="w-8 h-px" style={{ backgroundColor: area.color, opacity: 0.6 }} />
-        <p
-          className="font-body font-semibold text-[13px] uppercase tracking-[0.12em]"
-          style={{ color: "rgba(249,244,241,0.6)" }}
-        >
-          {es ? dev.theme : dev.themeEN}
-        </p>
-
-        {/* Reflection */}
-        <p
-          className="font-body text-[15px] leading-[1.85]"
-          style={{ color: "rgba(249,244,241,0.72)" }}
-        >
-          {es ? dev.reflection : dev.reflectionEN}
-        </p>
-
-        {/* Action */}
-        <div
-          className="p-5 space-y-2"
-          style={{
-            backgroundColor: `${area.color}18`,
-            border: `1px solid ${area.color}30`,
-          }}
-        >
-          <p className="text-[9px] uppercase tracking-[0.28em] font-body font-semibold" style={{ color: area.color }}>
-            {es ? "Acción del día" : "Today's action"}
-          </p>
-          <p className="font-body text-sm leading-relaxed" style={{ color: "rgba(249,244,241,0.65)" }}>
-            {es ? dev.action : dev.actionEN}
-          </p>
-        </div>
-
-        {/* CTA */}
-        <div className="flex items-center gap-4 pt-2">
-          <Link
-            href="/membresia"
-            className="inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.12em] font-body font-medium transition-opacity hover:opacity-80"
-            style={{ backgroundColor: area.color, color: "#fff" }}
-          >
-            {es ? "Leer completo" : "Read full"}
-            <span>→</span>
-          </Link>
-          <span
-            className="text-[10px] font-body"
-            style={{ color: "rgba(249,244,241,0.25)" }}
-          >
-            {es ? "Requiere membresía" : "Membership required"}
-          </span>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 
@@ -913,8 +1044,8 @@ function DayStrip({
   centerDay: number; todayDay: number; selectedDay: number;
   onSelect: (d: number) => void; lang: string;
 }) {
-  const es    = lang === "es";
-  const days  = [-3, -2, -1, 0, 1, 2, 3].map((offset) => centerDay + offset);
+  const es   = lang === "es";
+  const days = [-3, -2, -1, 0, 1, 2, 3].map((offset) => centerDay + offset);
 
   return (
     <div className="flex gap-2 overflow-x-auto pb-1">
@@ -991,6 +1122,53 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 /* ══════════════════════════════════════════════
+   DELIVERY CHANNEL CARDS
+══════════════════════════════════════════════ */
+function ChannelCards({ lang }: { lang: string }) {
+  const es = lang === "es";
+  const channels = [
+    {
+      emoji: "📱",
+      title: es ? "En la plataforma" : "On the platform",
+      desc: es ? "Accede cuando quieras desde cualquier dispositivo. Tu historial completo, siempre disponible." : "Access anytime from any device. Your full history, always available.",
+    },
+    {
+      emoji: "💬",
+      title: "WhatsApp",
+      desc: es ? "Recibe el audio + texto cada mañana directamente en tu WhatsApp. Sin apps adicionales." : "Receive audio + text every morning directly in your WhatsApp. No extra apps.",
+    },
+    {
+      emoji: "📧",
+      title: es ? "Correo electrónico" : "Email",
+      desc: es ? "Llega a las 7am a tu bandeja. Audio adjunto + texto completo para leer a tu ritmo." : "Arrives at 7am in your inbox. Audio attachment + full text to read at your pace.",
+    },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {channels.map((ch, i) => (
+        <div
+          key={i}
+          className="p-6 space-y-3"
+          style={{
+            backgroundColor: "rgba(249,244,241,0.03)",
+            border: "1px solid rgba(249,244,241,0.08)",
+          }}
+        >
+          <div className="text-2xl">{ch.emoji}</div>
+          <p className="font-body text-[13px] font-semibold uppercase tracking-[0.08em]" style={{ color: "#F9F4F1" }}>
+            {ch.title}
+          </p>
+          <p className="font-body text-[13px] leading-[1.75]" style={{ color: "rgba(249,244,241,0.42)" }}>
+            {ch.desc}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
    PAGE
 ══════════════════════════════════════════════ */
 export default function DevocionalesPage() {
@@ -1001,8 +1179,9 @@ export default function DevocionalesPage() {
   const today    = useMemo(() => new Date(), []);
   const todayDay = useMemo(() => Math.max(1, Math.min(TOTAL_DAYS, getDayNumber(today))), [today]);
 
-  const [selectedDay, setSelectedDay] = useState(todayDay);
-  const [centerDay, setCenterDay]     = useState(todayDay);
+  const [selectedDay, setSelectedDay]     = useState(todayDay);
+  const [centerDay, setCenterDay]         = useState(todayDay);
+  const [selectedChannel, setSelectedChannel] = useState<"plataforma" | "whatsapp" | "correo">("plataforma");
 
   const progress = Math.round((todayDay / TOTAL_DAYS) * 100 * 10) / 10;
 
@@ -1016,30 +1195,37 @@ export default function DevocionalesPage() {
     if (next <= todayDay) { setCenterDay(next); setSelectedDay(next); }
   };
 
+  const channels: { key: "plataforma" | "whatsapp" | "correo"; label: string; emoji: string }[] = [
+    { key: "plataforma", emoji: "📱", label: es ? "Plataforma" : "Platform" },
+    { key: "whatsapp",   emoji: "💬", label: "WhatsApp" },
+    { key: "correo",     emoji: "📧", label: es ? "Correo" : "Email" },
+  ];
+
   const faqES = [
     { q: "¿Con qué frecuencia llegan los devocionales?", a: "Hay un devocional por cada día del año — 365 en total. Se desbloquea uno nuevo cada día a medianoche." },
-    { q: "¿Puedo ver los devocionales de días anteriores?", a: "Sí. Todos los días pasados están disponibles para miembros. Puedes navegar por el historial completo." },
-    { q: "¿Necesito membresía para acceder?", a: "Puedes ver la vista previa de cada devocional sin membresía. Para leer el texto completo y la reflexión extendida necesitas ser miembro del Círculo." },
-    { q: "¿Los versículos están en español?", a: "Sí. Todos los versículos son en español, tomados de la Reina Valera y otras versiones en castellano." },
+    { q: "¿Puedo recibir el devocional en WhatsApp?", a: "Sí. Los miembros del Círculo pueden activar la entrega por WhatsApp. Cada mañana recibirás el audio y el texto directamente en tu chat." },
+    { q: "¿Puedo ver los devocionales de días anteriores?", a: "Sí. Todos los días pasados están disponibles para miembros. Puedes navegar por el historial completo desde la plataforma." },
+    { q: "¿Necesito membresía para acceder?", a: "Puedes ver la vista previa de cada devocional sin membresía. Para acceder al audio, la interpretación completa y la conclusión necesitas ser miembro del Círculo." },
     { q: "¿Qué áreas de vida cubre la jornada?", a: "Cubre 8 áreas: Pensamientos, Emociones, Acciones, Espíritu, Vínculos, Propósito, Identidad y Cuerpo — rotando a lo largo de los 365 días del año." },
   ];
   const faqEN = [
     { q: "How often do devotionals unlock?", a: "There is one devotional for each day of the year — 365 total. A new one unlocks every day at midnight." },
-    { q: "Can I view previous days' devotionals?", a: "Yes. All past days are available to members. You can browse the complete history." },
-    { q: "Do I need a membership to access?", a: "You can preview each devotional without membership. To read the full text and extended reflection you need to be a Circle member." },
-    { q: "What language are the verses in?", a: "Spanish. All verses are in Spanish, taken from Reina Valera and other Spanish translations." },
+    { q: "Can I receive devotionals on WhatsApp?", a: "Yes. Circle members can activate WhatsApp delivery. Every morning you'll receive the audio and text directly in your chat." },
+    { q: "Can I view previous days' devotionals?", a: "Yes. All past days are available to members. You can browse the complete history from the platform." },
+    { q: "Do I need a membership to access?", a: "You can preview each devotional without membership. To access the audio, full interpretation and conclusion you need to be a Circle member." },
     { q: "What life areas does the journey cover?", a: "It covers 8 areas: Thoughts, Emotions, Actions, Spirit, Relationships, Purpose, Identity and Body — rotating across the 365 days of the year." },
   ];
 
   return (
     <div style={{ backgroundColor: "#F9F4F1", color: "#000" }}>
 
-      {/* ══ 1. HERO ════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: "#0A0A0A", minHeight: "80vh" }}>
+      {/* ══ 1. HERO ═══════════════════════════════════════════ */}
+      <section className="relative overflow-hidden" style={{ backgroundColor: "#0A0A0A", minHeight: "84vh" }}>
         <GeoGrid opacity={0.08} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 60%, rgba(84,19,43,0.2), transparent 70%)" }}/>
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 60%, rgba(84,19,43,0.22), transparent 70%)" }}/>
 
-        <div className="relative z-10 max-w-[860px] mx-auto px-6 flex flex-col items-center justify-center text-center min-h-[80vh] gap-8">
+        <div className="relative z-10 max-w-[860px] mx-auto px-6 flex flex-col items-center justify-center text-center min-h-[84vh] gap-9">
+          {/* Eyebrow */}
           <div className="flex items-center gap-3 px-5 py-2" style={{ border: "1px solid rgba(146,129,120,0.22)", backgroundColor: "rgba(249,244,241,0.03)" }}>
             <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "#54132B" }} />
             <span className="text-[10px] uppercase tracking-[0.28em] font-body" style={{ color: "rgba(249,244,241,0.4)" }}>
@@ -1047,26 +1233,28 @@ export default function DevocionalesPage() {
             </span>
           </div>
 
-          <div className="space-y-3">
-            <h1 className="font-display" style={{ fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 300, color: "#F9F4F1", letterSpacing: "-0.02em", lineHeight: 1.04 }}>
+          {/* Headline */}
+          <div className="space-y-2">
+            <h1 className="font-display" style={{ fontSize: "clamp(44px, 7.5vw, 88px)", fontWeight: 300, color: "#F9F4F1", letterSpacing: "-0.02em", lineHeight: 1.06 }}>
               {es ? "Palabras para" : "Words to"}
             </h1>
-            <h1 className="font-display italic" style={{ fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 300, color: "#54132B", letterSpacing: "-0.02em", lineHeight: 1.04 }}>
+            <h1 className="font-display italic" style={{ fontSize: "clamp(44px, 7.5vw, 88px)", fontWeight: 300, color: "#54132B", letterSpacing: "-0.02em", lineHeight: 1.06 }}>
               {es ? "comenzar bien el día." : "start your day right."}
             </h1>
           </div>
 
-          <p className="font-body font-light max-w-[440px] leading-[1.8]" style={{ fontSize: "16px", color: "rgba(249,244,241,0.45)" }}>
+          {/* Updated subtext */}
+          <p className="font-body font-light max-w-[500px] leading-[1.85]" style={{ fontSize: "15px", color: "rgba(249,244,241,0.45)" }}>
             {es
-              ? "365 días. 365 versículos bíblicos poderosos. Una jornada anual completa conectada con tus emociones, pensamientos, acciones y todas las áreas integrales de tu vida."
-              : "365 days. 365 powerful biblical verses. A complete annual journey connected with your emotions, thoughts, actions and all integral areas of your life."}
+              ? "365 devocionales al año. En audio y texto. Recíbelos en la plataforma, en WhatsApp o directo a tu correo. Cada uno con versículo, interpretación profunda y conclusión."
+              : "365 devotionals a year. In audio and text. Receive them on the platform, on WhatsApp or directly to your email. Each with verse, deep interpretation and conclusion."}
           </p>
 
-          {/* Progress */}
+          {/* Progress bar */}
           <div className="w-full max-w-[400px] space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-[10px] uppercase tracking-[0.2em] font-body" style={{ color: "rgba(249,244,241,0.3)" }}>
-                {es ? `Día ${todayDay} de ${TOTAL_DAYS.toLocaleString()}` : `Day ${todayDay} of ${TOTAL_DAYS.toLocaleString()}`}
+                {es ? `Día ${todayDay} de ${TOTAL_DAYS}` : `Day ${todayDay} of ${TOTAL_DAYS}`}
               </span>
               <span className="text-[10px] font-body" style={{ color: "rgba(249,244,241,0.3)" }}>{progress}%</span>
             </div>
@@ -1075,13 +1263,38 @@ export default function DevocionalesPage() {
             </div>
           </div>
 
-          <a href="#jornada" className="inline-flex items-center gap-2 px-8 py-4 text-[12px] uppercase tracking-[0.12em] font-body font-medium transition-opacity hover:opacity-80" style={{ backgroundColor: "#54132B", color: "#F9F4F1" }}>
+          <a
+            href="#jornada"
+            className="inline-flex items-center gap-2 px-8 py-4 text-[12px] uppercase tracking-[0.12em] font-body font-medium transition-opacity hover:opacity-80"
+            style={{ backgroundColor: "#54132B", color: "#F9F4F1" }}
+          >
             {es ? "Ver el devocional de hoy" : "See today's devotional"} ↓
           </a>
         </div>
       </section>
 
-      {/* ══ 2. JORNADA INTERACTIVA ═════════════════════════════ */}
+      {/* ══ 2. CÓMO FUNCIONA ══════════════════════════════════ */}
+      <section className="relative overflow-hidden py-20 px-6" style={{ backgroundColor: "#0A0A0A", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <GeoGrid opacity={0.04} />
+        <div className="relative z-10 max-w-[900px] mx-auto space-y-10">
+          <div className="text-center space-y-3">
+            <p className="text-[10px] uppercase tracking-[0.35em] font-body" style={{ color: "#54132B" }}>
+              {es ? "Cómo funciona" : "How it works"}
+            </p>
+            <h2 className="font-display" style={{ fontSize: "clamp(22px, 2.8vw, 32px)", fontWeight: 300, color: "#F9F4F1" }}>
+              {es ? "Elige cómo recibir tu devocional" : "Choose how to receive your devotional"}
+            </h2>
+            <p className="font-body text-[14px] max-w-[420px] mx-auto leading-[1.8]" style={{ color: "rgba(249,244,241,0.38)" }}>
+              {es
+                ? "El mismo devocional — versículo, audio, interpretación y acción — llega donde tú quieras."
+                : "The same devotional — verse, audio, interpretation and action — arrives where you want it."}
+            </p>
+          </div>
+          <ChannelCards lang={lang} />
+        </div>
+      </section>
+
+      {/* ══ 3. JORNADA INTERACTIVA ════════════════════════════ */}
       <section id="jornada" className="relative overflow-hidden py-20 px-6" style={{ backgroundColor: "#0F0F0F" }}>
         <GeoGrid opacity={0.05} />
 
@@ -1178,25 +1391,33 @@ export default function DevocionalesPage() {
         </div>
       </section>
 
-      {/* ══ 3. SUSCRIPCIÓN ═════════════════════════════════════ */}
+      {/* ══ 4. SUSCRIPCIÓN ════════════════════════════════════ */}
       <section className="relative overflow-hidden py-24 px-6" style={{ backgroundColor: "#0A0A0A" }}>
         <GeoGrid opacity={0.06} />
         <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 50% 60% at 50% 50%, rgba(84,19,43,0.18), transparent 70%)" }}/>
 
-        <div className="relative z-10 max-w-[540px] mx-auto space-y-8 text-center">
+        <div className="relative z-10 max-w-[560px] mx-auto space-y-8 text-center">
           <div className="space-y-4">
             <p className="text-[10px] uppercase tracking-[0.35em] font-body" style={{ color: "rgba(249,244,241,0.35)" }}>
               {es ? "Únete a la jornada" : "Join the journey"}
             </p>
             <h2 className="font-display" style={{ fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 300, color: "#F9F4F1", lineHeight: 1.15 }}>
-              {es ? "Recibe cada devocional\nen tu correo." : "Receive each devotional\nin your inbox."}
+              {es ? "Recibe cada devocional\ncomo tú prefieras." : "Receive each devotional\nhow you prefer."}
             </h2>
+            <p className="font-body text-[14px] leading-[1.8]" style={{ color: "rgba(249,244,241,0.35)" }}>
+              {es ? "Plataforma, WhatsApp o correo — elige tu canal y recíbelo cada mañana." : "Platform, WhatsApp or email — choose your channel and receive it every morning."}
+            </p>
           </div>
 
+          {/* Pricing box */}
           <div className="flex items-center justify-between px-6 py-5" style={{ border: "1px solid rgba(84,19,43,0.35)", backgroundColor: "rgba(84,19,43,0.06)" }}>
             <div className="text-left space-y-1">
-              <p className="font-body text-sm font-semibold" style={{ color: "#F9F4F1" }}>{es ? "Devocionales Diarios" : "Daily Devotionals"}</p>
-              <p className="font-body text-[11px]" style={{ color: "rgba(249,244,241,0.35)" }}>{es ? "365 días · 8 áreas · Cancela cuando quieras" : "365 days · 8 areas · Cancel anytime"}</p>
+              <p className="font-body text-sm font-semibold" style={{ color: "#F9F4F1" }}>
+                {es ? "Devocionales Diarios" : "Daily Devotionals"}
+              </p>
+              <p className="font-body text-[11px]" style={{ color: "rgba(249,244,241,0.35)" }}>
+                {es ? "365 días · 8 áreas · Cancela cuando quieras" : "365 days · 8 areas · Cancel anytime"}
+              </p>
             </div>
             <div className="text-right">
               <p className="font-display font-light" style={{ fontSize: "28px", color: "#F9F4F1", lineHeight: 1 }}>$9</p>
@@ -1204,28 +1425,74 @@ export default function DevocionalesPage() {
             </div>
           </div>
 
-          <div className="flex gap-0">
-            <input
-              type="email"
-              placeholder={es ? "tu@correo.com" : "your@email.com"}
-              className="flex-1 px-5 py-4 text-sm font-body outline-none"
-              style={{ backgroundColor: "rgba(249,244,241,0.05)", border: "1px solid rgba(249,244,241,0.12)", borderRight: "none", color: "#F9F4F1" }}
-            />
+          {/* Channel selector */}
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.25em] font-body mb-3" style={{ color: "rgba(249,244,241,0.3)" }}>
+              {es ? "¿Cómo quieres recibirlos?" : "How do you want to receive them?"}
+            </p>
+            <div className="flex gap-2 justify-center flex-wrap">
+              {channels.map((ch) => (
+                <button
+                  key={ch.key}
+                  onClick={() => setSelectedChannel(ch.key)}
+                  className="flex items-center gap-2 px-4 py-2.5 text-[11px] font-body uppercase tracking-[0.1em] transition-all duration-200"
+                  style={{
+                    backgroundColor: selectedChannel === ch.key ? "#54132B" : "rgba(249,244,241,0.05)",
+                    border: `1px solid ${selectedChannel === ch.key ? "#54132B" : "rgba(249,244,241,0.12)"}`,
+                    color: selectedChannel === ch.key ? "#F9F4F1" : "rgba(249,244,241,0.45)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <span>{ch.emoji}</span>
+                  {ch.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Input / CTA based on channel */}
+          {selectedChannel === "plataforma" ? (
             <Link
               href="/membresia"
-              className="px-6 py-4 text-[11px] font-body font-semibold uppercase tracking-[0.12em] transition-opacity hover:opacity-80 flex-shrink-0 inline-flex items-center"
+              className="w-full flex items-center justify-center gap-2 px-6 py-4 text-[12px] uppercase tracking-[0.14em] font-body font-semibold transition-opacity hover:opacity-80"
               style={{ backgroundColor: "#54132B", color: "#F9F4F1" }}
             >
-              {es ? "Comenzar" : "Start"}
+              {es ? "Únete a la membresía" : "Join the membership"} →
             </Link>
-          </div>
+          ) : (
+            <div className="flex gap-0">
+              <input
+                type={selectedChannel === "correo" ? "email" : "tel"}
+                placeholder={
+                  selectedChannel === "whatsapp"
+                    ? (es ? "Tu número de WhatsApp" : "Your WhatsApp number")
+                    : (es ? "tu@correo.com" : "your@email.com")
+                }
+                className="flex-1 px-5 py-4 text-sm font-body outline-none"
+                style={{
+                  backgroundColor: "rgba(249,244,241,0.05)",
+                  border: "1px solid rgba(249,244,241,0.12)",
+                  borderRight: "none",
+                  color: "#F9F4F1",
+                }}
+              />
+              <Link
+                href="/membresia"
+                className="px-6 py-4 text-[11px] font-body font-semibold uppercase tracking-[0.12em] transition-opacity hover:opacity-80 flex-shrink-0 inline-flex items-center"
+                style={{ backgroundColor: "#54132B", color: "#F9F4F1" }}
+              >
+                {es ? "Comenzar" : "Start"}
+              </Link>
+            </div>
+          )}
+
           <p className="text-[10px] font-body" style={{ color: "rgba(249,244,241,0.2)" }}>
             {es ? "Pago seguro · Sin compromisos mínimos" : "Secure payment · No minimum commitments"}
           </p>
         </div>
       </section>
 
-      {/* ══ 4. FAQ ═════════════════════════════════════════════ */}
+      {/* ══ 5. FAQ ════════════════════════════════════════════ */}
       <section className="py-24 px-6" style={{ backgroundColor: "#F9F4F1" }}>
         <div className="max-w-[720px] mx-auto space-y-12">
           <div className="space-y-4">
@@ -1247,7 +1514,11 @@ export default function DevocionalesPage() {
               <p className="font-display text-lg font-light" style={{ color: "#000" }}>{es ? "¿Más preguntas?" : "More questions?"}</p>
               <p className="font-body text-sm" style={{ color: "#928178" }}>{es ? "Estamos aquí." : "We're here."}</p>
             </div>
-            <Link href="/contacto" className="px-6 py-3 text-[11px] font-body font-semibold uppercase tracking-[0.12em] transition-opacity hover:opacity-80 inline-flex items-center" style={{ backgroundColor: "#54132B", color: "#F9F4F1" }}>
+            <Link
+              href="/contacto"
+              className="px-6 py-3 text-[11px] font-body font-semibold uppercase tracking-[0.12em] transition-opacity hover:opacity-80 inline-flex items-center"
+              style={{ backgroundColor: "#54132B", color: "#F9F4F1" }}
+            >
               {es ? "Contáctanos" : "Contact"}
             </Link>
           </div>

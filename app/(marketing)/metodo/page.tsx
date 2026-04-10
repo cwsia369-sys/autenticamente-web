@@ -31,6 +31,37 @@ function GridBg({ opacity = 0.04, color = "#928178", size = 60 }: { opacity?: nu
 }
 
 /* ──────────────────────────────────────────────────────────
+   Geometric overlay — editorial rectangles (same pattern as
+   the Podcast section of the homepage). Layered concentric
+   translucent rects + corner accents + vertical accent lines.
+   ────────────────────────────────────────────────────────── */
+function GeoLayer({ variant = "dark" }: { variant?: "dark" | "light" }) {
+  const stroke = variant === "dark" ? "rgba(255,255,255,0.045)" : "rgba(84,19,43,0.07)";
+  const accent = variant === "dark" ? "rgba(255,255,255,0.06)"  : "rgba(84,19,43,0.09)";
+  const lineClr = variant === "dark" ? "rgba(255,255,255,0.05)" : "rgba(84,19,43,0.06)";
+  return (
+    <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", inset: 0 }} preserveAspectRatio="xMidYMid slice">
+        {/* Large outer rect — full bleed */}
+        <rect x="5%" y="8%" width="90%" height="84%" fill="none" stroke={stroke} strokeWidth="1" />
+        {/* Mid rect — offset */}
+        <rect x="14%" y="18%" width="72%" height="64%" fill="none" stroke={stroke} strokeWidth="0.8" />
+        {/* Corner accent — top left */}
+        <rect x="5%" y="8%" width="18%" height="22%" fill="none" stroke={accent} strokeWidth="1" />
+        {/* Corner accent — bottom right */}
+        <rect x="77%" y="70%" width="18%" height="22%" fill="none" stroke={accent} strokeWidth="1" />
+        {/* Thin inner rect */}
+        <rect x="22%" y="28%" width="56%" height="44%" fill="none" stroke={stroke} strokeWidth="0.6" />
+        {/* Vertical line — left accent */}
+        <line x1="5%" y1="8%" x2="5%" y2="92%" stroke={lineClr} strokeWidth="1" />
+        {/* Vertical line — right accent */}
+        <line x1="95%" y1="8%" x2="95%" y2="92%" stroke={lineClr} strokeWidth="1" />
+      </svg>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────
    Animated Number — counts up when in view
    ────────────────────────────────────────────────────────── */
 function AnimatedNumber({ value }: { value: string }) {
@@ -413,7 +444,7 @@ export default function MetodoPage() {
 
       {/* ═══════════ HERO ═══════════ */}
       <section className="relative overflow-hidden" style={{ backgroundColor: "#000000" }}>
-        <GridBg opacity={0.055} color="#F9F4F1" size={64} />
+        <GeoLayer variant="dark" />
         <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 60% at 50% 35%, rgba(84,19,43,0.38) 0%, transparent 72%)" }} />
         <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 40% at 50% 100%, rgba(84,19,43,0.18) 0%, transparent 60%)" }} />
 
@@ -426,7 +457,7 @@ export default function MetodoPage() {
 
           <Reveal delay={120}>
             <h1
-              className="font-display"
+              className="font-display flex flex-col items-center gap-3"
               style={{
                 fontSize: "clamp(44px, 7.5vw, 104px)",
                 fontWeight: 300,
@@ -435,11 +466,19 @@ export default function MetodoPage() {
                 color: "#F9F4F1",
               }}
             >
-              {lang === "es" ? "El Método" : "The Method"}
-              <br />
-              <span className="italic" style={{ color: "#7A2040" }}>
-                AuténticaMente
-              </span>
+              <span>{lang === "es" ? "El Método" : "The Method"}</span>
+              <Image
+                src="/logos/am-wordmark-burgundy.svg"
+                alt="AuténticaMente"
+                width={900}
+                height={240}
+                priority
+                style={{
+                  width: "clamp(260px, 54vw, 760px)",
+                  height: "auto",
+                  display: "block",
+                }}
+              />
             </h1>
           </Reveal>
 

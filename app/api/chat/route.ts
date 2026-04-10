@@ -10,14 +10,20 @@ CONTEXTO SOBRE AUTÉNTICAMENTE:
 - Pilares: Identidad, Propósito, Transformación.
 - Fundadora: Dra. Liset Valencia, psicóloga clínica.
 
-MEMBRESÍA "CÍRCULO VUELVE A TI" ($99 USD/mes):
-- Biblioteca de audios y meditaciones (9+ audios)
-- Ebooks y workbooks exclusivos
-- Devocionales semanales (2x por semana)
-- Acceso prioritario a conferencias y eventos
-- Comunidad privada (próximamente)
-- Beneficios vinculados a Liset Valencia
-- Cancela cuando quieras, sin compromisos.
+MEMBRESÍA — 3 TIERS (todos mensuales, cancela cuando quieras):
+
+1. DESPERTAR — $19 USD/mes
+   El primer paso. Incluye: biblioteca completa de audios y meditaciones (9+), devocionales semanales 2x/semana, newsletter exclusivo, comunidad online, test emocional básico.
+
+2. CÍRCULO — $49 USD/mes (MÁS POPULAR)
+   Todo lo de Despertar + ebooks y workbooks exclusivos, workshops grupales mensuales en vivo, test emocional avanzado con reportes, conferencias online en vivo, acceso anticipado a contenidos nuevos.
+   BONOS: 15% descuento en consultas con Dra. Valencia, 15% descuento en eventos presenciales.
+
+3. VERDAD — $99 USD/mes
+   Todo lo de Círculo + sesión grupal mensual con Dra. Valencia (1.5h online), acceso prioritario a retiros RAÍZ, curso exclusivo "Verdad Interior", workbook personalizado anual, llamada de bienvenida 1:1.
+   BONOS: 25% descuento en consultas individuales con Liset, 25% descuento en eventos y retiros presenciales.
+
+Los bonos de descuento aplican a consultas clínicas, eventos presenciales y retiros que son servicios APARTE de la membresía. Se pueden cambiar de tier en cualquier momento.
 
 PROGRAMAS Y CONFERENCIAS:
 - Conferencia RAÍZ — Identidad y propósito

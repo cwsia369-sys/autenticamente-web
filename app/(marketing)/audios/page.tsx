@@ -449,20 +449,25 @@ export default function AudiosPage() {
 
           {/* Price display — large, confident */}
           <div className="mb-10">
-            <p
-              className="font-display"
-              style={{
-                fontSize: "clamp(52px, 7vw, 88px)",
-                fontWeight: 200,
-                lineHeight: 1,
-                color: "#F9F4F1",
-                letterSpacing: "-0.03em",
-              }}
-            >
-              $99
-            </p>
+            <div className="flex items-baseline justify-center gap-3">
+              <p className="font-body" style={{ fontSize: "14px", color: "rgba(249,244,241,0.4)", fontWeight: 400 }}>
+                {lang === "es" ? "Desde" : "From"}
+              </p>
+              <p
+                className="font-display"
+                style={{
+                  fontSize: "clamp(52px, 7vw, 88px)",
+                  fontWeight: 200,
+                  lineHeight: 1,
+                  color: "#F9F4F1",
+                  letterSpacing: "-0.03em",
+                }}
+              >
+                $19
+              </p>
+            </div>
             <p className="font-body mt-2" style={{ fontSize: "14px", color: "rgba(249,244,241,0.35)", fontWeight: 400 }}>
-              {lang === "es" ? "al mes · Cancela cuando quieras" : "per month · Cancel anytime"}
+              {lang === "es" ? "USD al mes · 3 planes disponibles" : "USD per month · 3 plans available"}
             </p>
           </div>
 
@@ -489,7 +494,7 @@ export default function AudiosPage() {
                 (e.currentTarget as HTMLElement).style.transform = "scale(1)";
               }}
             >
-              {lang === "es" ? "Unirme al Círculo" : "Join the Circle"}
+              {lang === "es" ? "Ver los planes" : "View plans"}
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <path d="M5.5 3L9.5 7L5.5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>

@@ -1235,9 +1235,9 @@ export default function HomePage() {
             className="font-display hero-title"
             style={{
               fontSize:      "clamp(44px, 6vw, 88px)",
-              fontWeight:    800,
-              lineHeight:    0.9,
-              letterSpacing: "-0.025em",
+              fontWeight:    500,
+              lineHeight:    0.95,
+              letterSpacing: "-0.02em",
               color:         "#000000",
             }}
           >

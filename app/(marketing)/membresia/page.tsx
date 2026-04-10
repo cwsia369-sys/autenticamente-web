@@ -1,91 +1,197 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 import { useLang } from "@/app/providers/LangProvider";
 
-/* ── SVG Icons (línea fina, profesionales) ── */
-function IconHeadphones() {
+/* ──────────────────────────────────────────────────────────
+   SVG Icons — inline, stroke-based, brand palette
+   ────────────────────────────────────────────────────────── */
+function IconHeadphones({ color = "currentColor" }: { color?: string }) {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 18V14a10 10 0 0 1 20 0v4" />
-      <rect x="2" y="18" width="4" height="7" rx="1.5" />
-      <rect x="22" y="18" width="4" height="7" rx="1.5" />
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke={color} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 20V16a11 11 0 0 1 22 0v4" />
+      <rect x="2.5" y="20" width="5" height="8" rx="1.5" />
+      <rect x="24.5" y="20" width="5" height="8" rx="1.5" />
     </svg>
   );
 }
-function IconBook() {
+function IconUsers({ color = "currentColor" }: { color?: string }) {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 4h7a3 3 0 0 1 3 3v17a2 2 0 0 0-2-2H4V4z" />
-      <path d="M24 4h-7a3 3 0 0 0-3 3v17a2 2 0 0 1 2-2h8V4z" />
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke={color} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="4.5" />
+      <path d="M3 27c0-4.5 4-8 8.5-8s8.5 3.5 8.5 8" />
+      <circle cx="23" cy="11" r="3.5" />
+      <path d="M24 19c3.5.6 6 3.5 6 8" />
     </svg>
   );
 }
-function IconMail() {
+function IconStar({ color = "currentColor" }: { color?: string }) {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="6" width="22" height="16" rx="2" />
-      <path d="M3 8l11 7 11-7" />
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke={color} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 3.5l3.8 8.1 8.7 1-6.4 6.1 1.7 8.8L16 23.3l-7.8 4.2 1.7-8.8-6.4-6.1 8.7-1z" />
     </svg>
   );
 }
-function IconMic() {
+function IconCheck({ color = "#54132B" }: { color?: string }) {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="10" y="3" width="8" height="14" rx="4" />
-      <path d="M6 14a8 8 0 0 0 16 0" />
-      <line x1="14" y1="22" x2="14" y2="26" />
-      <line x1="10" y1="26" x2="18" y2="26" />
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 mt-0.5">
+      <circle cx="8" cy="8" r="7" stroke={color} strokeWidth="0.8" opacity="0.6" />
+      <path d="M5 8l2 2 4-4" stroke={color} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
-function IconUsers() {
+function IconSpark({ color = "#54132B" }: { color?: string }) {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="10" cy="9" r="4" />
-      <path d="M2 24c0-4 3.5-7 8-7s8 3 8 7" />
-      <circle cx="21" cy="9" r="3" />
-      <path d="M22 17c3 .5 5 3 5 7" />
-    </svg>
-  );
-}
-function IconStar() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="14,3 17.1,10.4 25,11.3 19.2,16.5 20.7,24.2 14,20.3 7.3,24.2 8.8,16.5 3,11.3 10.9,10.4" />
-    </svg>
-  );
-}
-function IconCheck() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="shrink-0 mt-0.5">
-      <circle cx="9" cy="9" r="8" stroke="#54132B" strokeWidth="0.8" />
-      <path d="M6 9l2.5 2.5L13 7" stroke="#54132B" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0 mt-0.5">
+      <path d="M7 1v4M7 9v4M1 7h4M9 7h4" stroke={color} strokeWidth="1.2" strokeLinecap="round" />
     </svg>
   );
 }
 
-const benefitIcons = [IconHeadphones, IconBook, IconMail, IconMic, IconUsers, IconStar];
+/* ──────────────────────────────────────────────────────────
+   3-TIER DATA
+   ────────────────────────────────────────────────────────── */
+type Tier = {
+  id: string;
+  name: string;
+  tagline: string;
+  price: string;
+  priceLabel: string;
+  featured: boolean;
+  badge?: string;
+  features: string[];
+  bonuses: string[];
+  cta: string;
+};
 
-/* ── Data ── */
-const benefitsES = [
-  { title: "Audios y meditaciones", desc: "Acceso ilimitado a toda la biblioteca — meditaciones guiadas, regulación emocional, afirmaciones y audios para dormir.", highlight: "Ilimitado" },
-  { title: "Ebooks y workbooks", desc: "Recursos digitales exclusivos para profundizar tu proceso. Descarga inmediata, sin restricciones.", highlight: "Exclusivos" },
-  { title: "Devocionales semanales", desc: "Dos veces por semana recibes palabras para comenzar tu día con presencia y propósito. Directo a tu correo.", highlight: "2x semana" },
-  { title: "Conferencias y eventos", desc: "Inscripción anticipada y descuento exclusivo para miembros en todos los eventos de AuténticaMente.", highlight: "Prioridad" },
-  { title: "Comunidad privada", desc: "Un espacio íntimo donde compartir, crecer y acompañarte con otras mujeres en proceso. Próximamente.", highlight: "Próximamente" },
-  { title: "Acceso a Liset Valencia", desc: "Sesiones grupales, descuentos especiales y contenido exclusivo de la Dra. Liset Valencia para miembros.", highlight: "Especial" },
+const tiersES: Tier[] = [
+  {
+    id: "despertar",
+    name: "Despertar",
+    tagline: "El primer paso para reconectar contigo",
+    price: "$19",
+    priceLabel: "USD / mes",
+    featured: false,
+    features: [
+      "Biblioteca completa de audios y meditaciones (9+ audios)",
+      "Devocionales semanales (2x por semana)",
+      "Newsletter exclusivo de la Dra. Valencia",
+      "Comunidad online",
+      "Test emocional básico",
+    ],
+    bonuses: [],
+    cta: "Empezar con Despertar",
+  },
+  {
+    id: "circulo",
+    name: "Círculo",
+    tagline: "Tu espacio de transformación continua",
+    price: "$49",
+    priceLabel: "USD / mes",
+    featured: true,
+    badge: "Más popular",
+    features: [
+      "Todo lo de Despertar",
+      "Ebooks y workbooks exclusivos",
+      "Workshops grupales mensuales en vivo",
+      "Test emocional avanzado + reportes",
+      "Conferencias online en vivo",
+      "Acceso anticipado a nuevos contenidos",
+    ],
+    bonuses: [
+      "15% de descuento en consultas con Dra. Valencia",
+      "15% de descuento en eventos presenciales",
+    ],
+    cta: "Unirme al Círculo",
+  },
+  {
+    id: "verdad",
+    name: "Verdad",
+    tagline: "Profundidad y acompañamiento directo",
+    price: "$99",
+    priceLabel: "USD / mes",
+    featured: false,
+    features: [
+      "Todo lo de Círculo",
+      "Sesión grupal mensual con Dra. Liset Valencia (1.5h online)",
+      "Acceso prioritario a retiros RAÍZ",
+      "Curso exclusivo 'Verdad Interior'",
+      "Workbook personalizado anual",
+      "Llamada de bienvenida 1:1 con la asistente",
+    ],
+    bonuses: [
+      "25% de descuento en consultas individuales con Liset",
+      "25% de descuento en eventos y retiros presenciales",
+    ],
+    cta: "Elegir Verdad",
+  },
 ];
-const benefitsEN = [
-  { title: "Audios & meditations", desc: "Unlimited access to the full library — guided meditations, emotional regulation, affirmations and sleep audios.", highlight: "Unlimited" },
-  { title: "Ebooks & workbooks", desc: "Exclusive digital resources to deepen your process. Immediate download, no restrictions.", highlight: "Exclusive" },
-  { title: "Weekly devotionals", desc: "Twice a week you receive words to start your day with presence and purpose. Delivered to your inbox.", highlight: "2x week" },
-  { title: "Conferences & events", desc: "Early registration and exclusive member discounts on all AuténticaMente events.", highlight: "Priority" },
-  { title: "Private community", desc: "An intimate space to share, grow and walk alongside other women in process. Coming soon.", highlight: "Coming soon" },
-  { title: "Access to Liset Valencia", desc: "Group sessions, special discounts and exclusive content from Dr. Liset Valencia for members.", highlight: "Special" },
+
+const tiersEN: Tier[] = [
+  {
+    id: "despertar",
+    name: "Awaken",
+    tagline: "The first step to reconnect with yourself",
+    price: "$19",
+    priceLabel: "USD / month",
+    featured: false,
+    features: [
+      "Full audio and meditation library (9+ audios)",
+      "Weekly devotionals (2x per week)",
+      "Exclusive newsletter from Dr. Valencia",
+      "Online community",
+      "Basic emotional test",
+    ],
+    bonuses: [],
+    cta: "Start with Awaken",
+  },
+  {
+    id: "circulo",
+    name: "Circle",
+    tagline: "Your space for continuous transformation",
+    price: "$49",
+    priceLabel: "USD / month",
+    featured: true,
+    badge: "Most popular",
+    features: [
+      "Everything in Awaken",
+      "Exclusive ebooks & workbooks",
+      "Monthly live group workshops",
+      "Advanced emotional test + reports",
+      "Live online conferences",
+      "Early access to new content",
+    ],
+    bonuses: [
+      "15% discount on sessions with Dr. Valencia",
+      "15% discount on in-person events",
+    ],
+    cta: "Join the Circle",
+  },
+  {
+    id: "verdad",
+    name: "Truth",
+    tagline: "Depth and direct support",
+    price: "$99",
+    priceLabel: "USD / month",
+    featured: false,
+    features: [
+      "Everything in Circle",
+      "Monthly group session with Dr. Liset Valencia (1.5h online)",
+      "Priority access to RAÍZ retreats",
+      "Exclusive 'Inner Truth' course",
+      "Annual personalized workbook",
+      "1:1 welcome call with the assistant",
+    ],
+    bonuses: [
+      "25% discount on individual sessions with Liset",
+      "25% discount on in-person events and retreats",
+    ],
+    cta: "Choose Truth",
+  },
 ];
+
+const tierIcons = [IconHeadphones, IconUsers, IconStar];
 
 const forWhoES = [
   "Llevas tiempo sintiéndote desconectada de ti misma",
@@ -101,109 +207,38 @@ const forWhoEN = [
 ];
 
 const faqES = [
+  { q: "¿Puedo empezar con Despertar y subir de tier después?", a: "Sí. Puedes cambiar de tier en cualquier momento desde tu perfil. Si subes, se ajusta el cobro proporcionalmente. Si bajas, el cambio aplica en tu próximo ciclo." },
+  { q: "¿Los bonos de descuento son acumulables con promociones?", a: "Los bonos de miembros aplican sobre el precio regular de consultas y eventos presenciales. No se combinan con otras promociones, pero siempre usamos el mejor descuento disponible." },
   { q: "¿Puedo cancelar cuando quiera?", a: "Sí. Cancelas cuando quieras desde tu perfil. No hay compromisos mínimos ni penalidades." },
   { q: "¿Pierdo el acceso al cancelar?", a: "No. Mantienes el acceso hasta el final del período pagado. Luego se desactiva automáticamente." },
-  { q: "¿Incluye consulta con Liset?", a: "No. La membresía es de contenidos, recursos y comunidad. No reemplaza un proceso terapéutico individual." },
-  { q: "¿Cómo accedo al contenido?", a: "Al suscribirte, accedes a tu dashboard personal desde cualquier dispositivo." },
-  { q: "¿Hay período de prueba?", a: "Próximamente. Por ahora el primer cobro es inmediato al unirte." },
+  { q: "¿La membresía incluye consulta individual con Liset?", a: "Solo el tier Verdad incluye una sesión grupal mensual con la Dra. Valencia. Las consultas individuales son aparte pero los miembros de Círculo y Verdad tienen descuento." },
+  { q: "¿Cómo accedo al contenido?", a: "Al suscribirte, accedes a tu dashboard personal desde cualquier dispositivo con tu email." },
 ];
 const faqEN = [
+  { q: "Can I start with Awaken and upgrade later?", a: "Yes. You can change tiers anytime from your profile. Upgrades are prorated. Downgrades apply on your next billing cycle." },
+  { q: "Are member discounts stackable with promotions?", a: "Member bonuses apply to the regular price of consultations and in-person events. They don't combine with other promotions, but we always use the best available discount." },
   { q: "Can I cancel anytime?", a: "Yes. Cancel anytime from your profile. No minimum commitments or penalties." },
   { q: "Do I lose access when I cancel?", a: "No. You keep access until the end of the period you already paid for." },
-  { q: "Does it include consultation with Liset?", a: "No. The membership is for content, resources and community. It does not replace individual therapy." },
-  { q: "How do I access the content?", a: "When you subscribe, you access your personal dashboard from any device." },
-  { q: "Is there a trial period?", a: "Coming soon. For now, the first charge is immediate upon joining." },
+  { q: "Does the membership include individual sessions with Liset?", a: "Only the Truth tier includes a monthly group session with Dr. Valencia. Individual sessions are separate but Circle and Truth members get a discount." },
+  { q: "How do I access the content?", a: "When you subscribe, you access your personal dashboard from any device with your email." },
 ];
 
 const numbersES = [
+  { num: "3",  label: "Tiers" },
   { num: "9+", label: "Audios y meditaciones" },
-  { num: "6+", label: "Ebooks y guías" },
   { num: "2x", label: "Devocionales / semana" },
-  { num: "∞",  label: "Acceso ilimitado" },
+  { num: "25%", label: "Descuento máximo" },
 ];
 const numbersEN = [
+  { num: "3",  label: "Tiers" },
   { num: "9+", label: "Audios & meditations" },
-  { num: "6+", label: "Ebooks & guides" },
   { num: "2x", label: "Devotionals / week" },
-  { num: "∞",  label: "Unlimited access" },
+  { num: "25%", label: "Max discount" },
 ];
 
-/* ── Membership Card Component ── */
-function MembershipCard({ lang }: { lang: string }) {
-  return (
-    <div
-      className="relative overflow-hidden mx-auto"
-      style={{
-        width: "340px",
-        height: "210px",
-        borderRadius: "16px",
-        background: "linear-gradient(135deg, #54132B 0%, #2A0915 50%, #0A0A0A 100%)",
-        boxShadow: "0 25px 60px rgba(84,19,43,0.4), 0 8px 20px rgba(0,0,0,0.3)",
-        padding: "28px 30px",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-      }}
-    >
-      {/* Glossy overlay */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%)", borderRadius: "16px" }} />
-
-      {/* Subtle pattern */}
-      <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.03 }}>
-        <svg width="340" height="210" viewBox="0 0 340 210" fill="none">
-          <circle cx="280" cy="40" r="80" stroke="#F9F4F1" strokeWidth="0.5" />
-          <circle cx="280" cy="40" r="50" stroke="#F9F4F1" strokeWidth="0.5" />
-          <circle cx="280" cy="40" r="20" stroke="#F9F4F1" strokeWidth="0.5" />
-        </svg>
-      </div>
-
-      {/* Top row */}
-      <div className="relative z-10 flex items-start justify-between">
-        <div>
-          <p className="font-body text-[8px] uppercase tracking-[0.3em] font-semibold" style={{ color: "rgba(249,244,241,0.45)" }}>
-            {lang === "es" ? "Membresía" : "Membership"}
-          </p>
-          <p className="font-display text-[22px] mt-1" style={{ color: "#F9F4F1", fontWeight: 300, letterSpacing: "-0.01em" }}>
-            {lang === "es" ? "Círculo" : "Circle"}
-            <span className="italic ml-1.5" style={{ color: "rgba(249,244,241,0.5)" }}>
-              {lang === "es" ? "Vuelve a Ti" : "Return to You"}
-            </span>
-          </p>
-        </div>
-        {/* Isotipo */}
-        <Image
-          src="/logos/am-icon-white.svg"
-          alt="AuténticaMente"
-          width={30}
-          height={30}
-          style={{ opacity: 0.7 }}
-        />
-      </div>
-
-      {/* Bottom row */}
-      <div className="relative z-10 flex items-end justify-between">
-        <div>
-          <p className="font-body text-[9px] uppercase tracking-[0.2em]" style={{ color: "rgba(249,244,241,0.35)" }}>
-            {lang === "es" ? "Miembro activo" : "Active member"}
-          </p>
-          <p className="font-body text-[11px] mt-0.5" style={{ color: "rgba(249,244,241,0.55)" }}>
-            autenticamente.com
-          </p>
-        </div>
-        <div className="text-right">
-          <p className="font-display text-[28px]" style={{ color: "#F9F4F1", fontWeight: 200, lineHeight: 1 }}>
-            $99
-          </p>
-          <p className="font-body text-[9px] uppercase tracking-[0.15em]" style={{ color: "rgba(249,244,241,0.4)" }}>
-            / {lang === "es" ? "mes" : "month"}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ── FAQ Accordion Item ── */
+/* ──────────────────────────────────────────────────────────
+   FAQ Accordion
+   ────────────────────────────────────────────────────────── */
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
@@ -225,10 +260,223 @@ function FaqItem({ q, a }: { q: string; a: string }) {
       </div>
       <div
         className="overflow-hidden transition-all duration-300"
-        style={{ maxHeight: open ? "200px" : "0", opacity: open ? 1 : 0, paddingBottom: open ? "20px" : "0" }}
+        style={{ maxHeight: open ? "240px" : "0", opacity: open ? 1 : 0, paddingBottom: open ? "20px" : "0" }}
       >
         <p className="font-body text-sm leading-relaxed" style={{ color: "#928178" }}>{a}</p>
       </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────
+   TIER CARD — 2 variants: light + featured dark
+   ────────────────────────────────────────────────────────── */
+function TierCard({ tier, index, lang }: { tier: Tier; index: number; lang: string }) {
+  const [hovered, setHovered] = useState(false);
+  const Icon = tierIcons[index];
+  const featured = tier.featured;
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="relative flex flex-col"
+      style={{
+        backgroundColor: featured ? "transparent" : "#FDFAF8",
+        background: featured
+          ? "linear-gradient(160deg, #54132B 0%, #2A0915 55%, #0A0A0A 100%)"
+          : undefined,
+        border: featured ? "none" : "1px solid rgba(146,129,120,0.18)",
+        borderRadius: "8px",
+        padding: featured ? "48px 36px" : "44px 36px",
+        boxShadow: featured
+          ? "0 30px 70px rgba(84,19,43,0.35), 0 10px 25px rgba(0,0,0,0.25)"
+          : hovered
+          ? "0 16px 40px rgba(84,19,43,0.08)"
+          : "none",
+        transform: featured
+          ? hovered ? "translateY(-6px) scale(1.02)" : "translateY(-4px) scale(1.02)"
+          : hovered ? "translateY(-3px)" : "translateY(0)",
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        zIndex: featured ? 2 : 1,
+        overflow: "hidden",
+      }}
+    >
+      {/* Featured glossy overlay + decorative circles */}
+      {featured && (
+        <>
+          <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 45%)", borderRadius: "8px" }} />
+          <div className="absolute pointer-events-none" style={{ top: 0, right: 0, opacity: 0.06 }}>
+            <svg width="220" height="180" viewBox="0 0 220 180" fill="none">
+              <circle cx="220" cy="0" r="130" stroke="#F9F4F1" strokeWidth="0.5" />
+              <circle cx="220" cy="0" r="80" stroke="#F9F4F1" strokeWidth="0.5" />
+              <circle cx="220" cy="0" r="35" stroke="#F9F4F1" strokeWidth="0.5" />
+            </svg>
+          </div>
+        </>
+      )}
+
+      {/* Top accent line (only for non-featured) */}
+      {!featured && (
+        <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(90deg, #54132B, rgba(84,19,43,0.08))" }} />
+      )}
+
+      {/* Badge "Más popular" */}
+      {featured && tier.badge && (
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
+          style={{
+            backgroundColor: "#F9F4F1",
+            color: "#54132B",
+            fontFamily: "var(--font-instrument), system-ui, sans-serif",
+            fontSize: "9px",
+            fontWeight: 700,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            padding: "6px 16px",
+            borderRadius: "100px",
+            boxShadow: "0 6px 18px rgba(84,19,43,0.35)",
+          }}
+        >
+          {tier.badge}
+        </div>
+      )}
+
+      {/* Icon */}
+      <div className="relative mb-6" style={{ color: featured ? "#F4E7E9" : "#54132B" }}>
+        <Icon />
+      </div>
+
+      {/* Tier name */}
+      <h3
+        className="relative font-display mb-2"
+        style={{
+          fontSize: "30px",
+          fontWeight: 300,
+          letterSpacing: "-0.015em",
+          color: featured ? "#F9F4F1" : "#0A0A0A",
+        }}
+      >
+        {tier.name}
+      </h3>
+
+      {/* Tagline */}
+      <p
+        className="relative font-body mb-8"
+        style={{
+          fontSize: "13px",
+          lineHeight: 1.6,
+          color: featured ? "rgba(249,244,241,0.55)" : "#928178",
+        }}
+      >
+        {tier.tagline}
+      </p>
+
+      {/* Price */}
+      <div className="relative mb-8 pb-8 border-b" style={{ borderColor: featured ? "rgba(249,244,241,0.1)" : "rgba(146,129,120,0.12)" }}>
+        <div className="flex items-baseline gap-2">
+          <p
+            className="font-display"
+            style={{
+              fontSize: "clamp(48px, 5.5vw, 64px)",
+              fontWeight: 200,
+              lineHeight: 1,
+              letterSpacing: "-0.035em",
+              color: featured ? "#F9F4F1" : "#0A0A0A",
+            }}
+          >
+            {tier.price}
+          </p>
+          <p
+            className="font-body"
+            style={{
+              fontSize: "11px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: featured ? "rgba(249,244,241,0.4)" : "#928178",
+            }}
+          >
+            {tier.priceLabel}
+          </p>
+        </div>
+      </div>
+
+      {/* Features list */}
+      <ul className="relative space-y-3 mb-6 flex-1">
+        {tier.features.map((feature, i) => (
+          <li key={i} className="flex items-start gap-3">
+            <IconCheck color={featured ? "#F9F4F1" : "#54132B"} />
+            <span
+              className="font-body"
+              style={{
+                fontSize: "13px",
+                lineHeight: 1.55,
+                color: featured ? "rgba(249,244,241,0.78)" : "rgba(10,10,10,0.72)",
+              }}
+            >
+              {feature}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      {/* Bonuses — only if present */}
+      {tier.bonuses.length > 0 && (
+        <div
+          className="relative mb-8 pt-5 border-t"
+          style={{ borderColor: featured ? "rgba(249,244,241,0.1)" : "rgba(146,129,120,0.15)" }}
+        >
+          <p
+            className="font-body mb-3"
+            style={{
+              fontSize: "9px",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+              color: featured ? "rgba(249,244,241,0.5)" : "#54132B",
+            }}
+          >
+            {lang === "es" ? "Bonos de miembro" : "Member bonuses"}
+          </p>
+          <ul className="space-y-2">
+            {tier.bonuses.map((bonus, i) => (
+              <li key={i} className="flex items-start gap-2.5">
+                <IconSpark color={featured ? "#F9F4F1" : "#54132B"} />
+                <span
+                  className="font-body"
+                  style={{
+                    fontSize: "12px",
+                    lineHeight: 1.55,
+                    color: featured ? "rgba(249,244,241,0.7)" : "rgba(10,10,10,0.62)",
+                  }}
+                >
+                  {bonus}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* CTA button */}
+      <a
+        href="#"
+        className="relative font-body font-semibold text-sm tracking-[0.04em] inline-flex items-center justify-center gap-2 transition-all duration-300"
+        style={{
+          padding: "15px 28px",
+          backgroundColor: featured ? "#F9F4F1" : "#54132B",
+          color: featured ? "#0A0A0A" : "#F9F4F1",
+          borderRadius: "100px",
+          width: "100%",
+        }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1.02)"; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1)"; }}
+      >
+        {tier.cta}
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M5.5 3L9.5 7L5.5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </a>
     </div>
   );
 }
@@ -238,71 +486,66 @@ function FaqItem({ q, a }: { q: string; a: string }) {
    ══════════════════════════════════════════════════════════ */
 export default function MembresiaPage() {
   const { lang } = useLang();
-  const benefits = lang === "es" ? benefitsES : benefitsEN;
-  const forWho   = lang === "es" ? forWhoES   : forWhoEN;
-  const faq      = lang === "es" ? faqES      : faqEN;
-  const numbers  = lang === "es" ? numbersES  : numbersEN;
+  const tiers   = lang === "es" ? tiersES   : tiersEN;
+  const forWho  = lang === "es" ? forWhoES  : forWhoEN;
+  const faq     = lang === "es" ? faqES     : faqEN;
+  const numbers = lang === "es" ? numbersES : numbersEN;
 
   return (
     <div style={{ backgroundColor: "#F9F4F1", color: "#0A0A0A" }}>
 
       {/* ══════════════════ HERO ══ */}
       <section className="relative overflow-hidden" style={{ backgroundColor: "#000000" }}>
-        {/* Ambient glow */}
         <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 60% at 50% 30%, rgba(84,19,43,0.35) 0%, transparent 70%)" }} />
 
-        <div className="relative z-10 max-w-[1100px] mx-auto px-6 lg:px-8 text-center" style={{ paddingTop: "clamp(100px,14vw,160px)", paddingBottom: "clamp(80px,12vw,140px)" }}>
+        <div className="relative z-10 max-w-[1100px] mx-auto px-6 lg:px-8 text-center" style={{ paddingTop: "clamp(100px,14vw,160px)", paddingBottom: "clamp(64px,8vw,100px)" }}>
 
-          {/* Supertitle */}
           <p className="font-body font-semibold uppercase tracking-[0.35em] mb-5" style={{ fontSize: "10px", color: "rgba(122,32,64,0.8)" }}>
             {lang === "es" ? "Membresía" : "Membership"}
           </p>
 
-          {/* Headline */}
           <h1
             className="font-display"
             style={{
-              fontSize: "clamp(44px, 7vw, 92px)",
+              fontSize: "clamp(42px, 6.5vw, 88px)",
               fontWeight: 300,
               lineHeight: 1.04,
               letterSpacing: "-0.025em",
               color: "#F9F4F1",
             }}
           >
-            {lang === "es" ? "Círculo" : "Circle"}
+            {lang === "es" ? "Tres caminos." : "Three paths."}
             <br />
             <span className="italic" style={{ color: "#7A2040" }}>
-              {lang === "es" ? "Vuelve a Ti" : "Return to You"}
+              {lang === "es" ? "Una transformación." : "One transformation."}
             </span>
           </h1>
 
-          {/* Subtitle */}
-          <p className="font-body leading-relaxed mx-auto mt-7" style={{ fontSize: "clamp(15px, 1.4vw, 18px)", color: "rgba(249,244,241,0.5)", maxWidth: "480px" }}>
+          <p className="font-body leading-relaxed mx-auto mt-7" style={{ fontSize: "clamp(15px, 1.4vw, 18px)", color: "rgba(249,244,241,0.5)", maxWidth: "520px" }}>
             {lang === "es"
-              ? "Tu lugar para sanar, crecer y no hacerlo sola. Recursos, comunidad y presencia continua."
-              : "Your place to heal, grow and not do it alone. Resources, community and continuous presence."}
+              ? "Elige el nivel de acompañamiento que necesitas hoy. Empieza por $19/mes y avanza a tu ritmo."
+              : "Choose the level of support you need today. Start from $19/month and grow at your own pace."}
           </p>
 
-          {/* Membership Card */}
-          <div className="mt-14 mb-12">
-            <MembershipCard lang={lang} />
-          </div>
-
-          {/* CTA */}
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
             <a
-              href="#unirse"
+              href="#tiers"
               className="font-body font-semibold text-sm tracking-[0.04em] inline-flex items-center gap-2 transition-all duration-300"
-              style={{ padding: "16px 44px", backgroundColor: "#F9F4F1", color: "#0A0A0A", borderRadius: "100px" }}
+              style={{ padding: "16px 40px", backgroundColor: "#F9F4F1", color: "#0A0A0A", borderRadius: "100px" }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1.03)"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1)"; }}
             >
-              {lang === "es" ? "Unirme al Círculo" : "Join the Circle"}
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 3L9.5 7L5.5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              {lang === "es" ? "Ver los planes" : "View plans"}
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3 7l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </a>
-            <p className="font-body text-[11px]" style={{ color: "rgba(249,244,241,0.25)" }}>
-              {lang === "es" ? "$99 USD / mes · Cancela cuando quieras" : "$99 USD / month · Cancel anytime"}
-            </p>
+            <Link
+              href="/test"
+              className="font-body text-sm tracking-[0.02em] inline-flex items-center gap-1.5 transition-opacity hover:opacity-70"
+              style={{ color: "#7A9FFF", padding: "16px 24px" }}
+            >
+              {lang === "es" ? "Hacer el test primero" : "Take the test first"}
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </Link>
           </div>
         </div>
       </section>
@@ -319,11 +562,47 @@ export default function MembresiaPage() {
         </div>
       </div>
 
-      {/* ══════════════════ PROPUESTA — 3-column visual ══ */}
-      <section className="relative overflow-hidden px-6" style={{ paddingTop: "clamp(80px,12vw,140px)", paddingBottom: "clamp(80px,12vw,140px)", backgroundColor: "#F9F4F1" }}>
-        <div className="max-w-[1100px] mx-auto">
+      {/* ══════════════════ 3 TIERS — main section ══ */}
+      <section id="tiers" className="px-6" style={{ paddingTop: "clamp(80px,12vw,140px)", paddingBottom: "clamp(80px,12vw,140px)" }}>
+        <div className="max-w-[1200px] mx-auto">
 
           {/* Header */}
+          <div className="text-center mb-16 space-y-4">
+            <p className="font-body font-semibold uppercase tracking-[0.35em]" style={{ fontSize: "10px", color: "#54132B" }}>
+              {lang === "es" ? "Elige tu camino" : "Choose your path"}
+            </p>
+            <h2 className="font-display" style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 300, color: "#0A0A0A", lineHeight: 1.08, letterSpacing: "-0.02em" }}>
+              {lang === "es"
+                ? <>Cada tier es<br /><span className="italic" style={{ color: "#7A2040" }}>un paso más profundo.</span></>
+                : <>Every tier is<br /><span className="italic" style={{ color: "#7A2040" }}>one step deeper.</span></>}
+            </h2>
+            <p className="font-body mx-auto" style={{ fontSize: "15px", color: "rgba(10,10,10,0.6)", maxWidth: "560px", lineHeight: 1.65, paddingTop: "8px" }}>
+              {lang === "es"
+                ? "Todos los planes se pagan mensual. Cancelas cuando quieras. Puedes subir o bajar de tier en cualquier momento."
+                : "All plans are monthly. Cancel anytime. You can upgrade or downgrade at any time."}
+            </p>
+          </div>
+
+          {/* Tier cards grid */}
+          <div className="grid md:grid-cols-3 gap-6 md:gap-5 items-start">
+            {tiers.map((tier, i) => (
+              <TierCard key={tier.id} tier={tier} index={i} lang={lang} />
+            ))}
+          </div>
+
+          {/* Fine print */}
+          <p className="text-center font-body mt-12" style={{ fontSize: "12px", color: "#928178" }}>
+            {lang === "es"
+              ? "Los bonos de descuento aplican a consultas clínicas, eventos presenciales (RAÍZ, Belleza con Propósito, etc.) y retiros. Se activan automáticamente al ser miembro activo."
+              : "Member bonuses apply to clinical sessions, in-person events (RAÍZ, Belleza con Propósito, etc.) and retreats. Activated automatically while your membership is active."}
+          </p>
+        </div>
+      </section>
+
+      {/* ══════════════════ PROPUESTA — why 3 pillars ══ */}
+      <section className="relative overflow-hidden px-6" style={{ paddingTop: "clamp(64px,10vw,120px)", paddingBottom: "clamp(80px,12vw,140px)", backgroundColor: "#F4E7E9" }}>
+        <div className="max-w-[1100px] mx-auto">
+
           <div className="text-center mb-16 space-y-5">
             <p className="font-body font-semibold uppercase tracking-[0.35em]" style={{ fontSize: "10px", color: "#54132B" }}>
               {lang === "es" ? "Por qué el Círculo" : "Why the Circle"}
@@ -335,9 +614,8 @@ export default function MembresiaPage() {
             </h2>
           </div>
 
-          {/* Three pillars */}
           <div className="grid md:grid-cols-3 gap-0 border rounded-[4px] overflow-hidden" style={{ borderColor: "rgba(146,129,120,0.2)" }}>
-            {/* Pillar 1 — No es una app */}
+            {/* Pillar 1 */}
             <div className="relative p-10 lg:p-12 border-b md:border-b-0 md:border-r" style={{ borderColor: "rgba(146,129,120,0.2)", backgroundColor: "#FDFAF8" }}>
               <div className="mb-6">
                 <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#54132B" strokeWidth="1" strokeLinecap="round">
@@ -359,7 +637,7 @@ export default function MembresiaPage() {
               </p>
             </div>
 
-            {/* Pillar 2 — No es un grupo */}
+            {/* Pillar 2 */}
             <div className="relative p-10 lg:p-12 border-b md:border-b-0 md:border-r" style={{ borderColor: "rgba(146,129,120,0.2)", backgroundColor: "#FDFAF8" }}>
               <div className="mb-6">
                 <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#54132B" strokeWidth="1" strokeLinecap="round">
@@ -381,7 +659,7 @@ export default function MembresiaPage() {
               </p>
             </div>
 
-            {/* Pillar 3 — Es tu lugar */}
+            {/* Pillar 3 */}
             <div className="relative p-10 lg:p-12" style={{ backgroundColor: "#0A0A0A" }}>
               <div className="mb-6">
                 <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#7A2040" strokeWidth="1" strokeLinecap="round">
@@ -406,83 +684,17 @@ export default function MembresiaPage() {
         </div>
       </section>
 
-      {/* ══════════════════ BENEFICIOS ══ */}
-      <section className="px-6" style={{ paddingTop: "clamp(40px,6vw,80px)", paddingBottom: "clamp(64px,10vw,120px)", backgroundColor: "#F4E7E9" }}>
-        <div className="max-w-[1100px] mx-auto">
-
-          <div className="text-center mb-16 space-y-4">
-            <p className="font-body font-semibold uppercase tracking-[0.3em]" style={{ fontSize: "10px", color: "#54132B" }}>
-              {lang === "es" ? "Qué incluye" : "What's included"}
-            </p>
-            <h2 className="font-display" style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 300, color: "#0A0A0A" }}>
-              {lang === "es" ? "Todo en un solo lugar." : "Everything in one place."}
-            </h2>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {benefits.map((b, i) => {
-              const BenefitIcon = benefitIcons[i];
-              return (
-                <div
-                  key={i}
-                  className="group relative overflow-hidden"
-                  style={{
-                    backgroundColor: "#FDFAF8",
-                    border: "1px solid rgba(146,129,120,0.15)",
-                    borderRadius: "3px",
-                    padding: "36px 32px",
-                    transition: "box-shadow 0.3s ease, transform 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.boxShadow = "0 12px 40px rgba(84,19,43,0.08)";
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.boxShadow = "none";
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                  }}
-                >
-                  {/* Accent top line */}
-                  <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(90deg, #54132B, rgba(84,19,43,0.1))" }} />
-
-                  {/* Icon + highlight badge */}
-                  <div className="flex items-start justify-between mb-5">
-                    <div style={{ color: "#54132B" }}>
-                      <BenefitIcon />
-                    </div>
-                    <span
-                      className="font-body text-[8px] font-bold uppercase tracking-[0.14em] px-2.5 py-1"
-                      style={{ backgroundColor: "rgba(84,19,43,0.08)", color: "#54132B", borderRadius: "100px" }}
-                    >
-                      {b.highlight}
-                    </span>
-                  </div>
-
-                  <h3 className="font-body font-semibold text-[15px] mb-3" style={{ color: "#0A0A0A" }}>
-                    {b.title}
-                  </h3>
-                  <p className="font-body text-[13px] leading-[1.7]" style={{ color: "#928178" }}>
-                    {b.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════ PARA QUIÉN ══ */}
+      {/* ══════════════════ PARA QUIÉN + HONEST NOTE ══ */}
       <section className="px-6" style={{ paddingTop: "clamp(64px,10vw,120px)", paddingBottom: "clamp(64px,10vw,120px)" }}>
         <div className="max-w-[1100px] mx-auto grid lg:grid-cols-2 gap-16 items-start">
 
-          {/* Left — For who */}
           <div className="space-y-8">
             <div className="space-y-4">
               <p className="font-body font-semibold uppercase tracking-[0.3em]" style={{ fontSize: "10px", color: "#54132B" }}>
                 {lang === "es" ? "Para quién es" : "Who it's for"}
               </p>
-              <h2 className="font-display" style={{ fontSize: "clamp(26px, 3.5vw, 40px)", fontWeight: 300, color: "#0A0A0A" }}>
-                {lang === "es" ? "El Círculo es para ti si…" : "The Circle is for you if…"}
+              <h2 className="font-display" style={{ fontSize: "clamp(26px, 3.5vw, 40px)", fontWeight: 300, color: "#0A0A0A", letterSpacing: "-0.01em" }}>
+                {lang === "es" ? "Esta membresía es para ti si…" : "This membership is for you if…"}
               </h2>
             </div>
             <ul className="space-y-5">
@@ -495,14 +707,9 @@ export default function MembresiaPage() {
             </ul>
           </div>
 
-          {/* Right — Honest note */}
           <div
             className="relative overflow-hidden"
-            style={{
-              backgroundColor: "#0A0A0A",
-              borderRadius: "3px",
-              padding: "clamp(32px,4vw,48px)",
-            }}
+            style={{ backgroundColor: "#0A0A0A", borderRadius: "3px", padding: "clamp(32px,4vw,48px)" }}
           >
             <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(90deg, #54132B, transparent)" }} />
 
@@ -514,13 +721,13 @@ export default function MembresiaPage() {
             </h3>
             <p className="font-body text-[14px] leading-[1.75] mb-4" style={{ color: "rgba(249,244,241,0.55)" }}>
               {lang === "es"
-                ? "El Círculo es una membresía de contenidos, recursos y comunidad. No es un proceso terapéutico y no reemplaza una consulta clínica individual."
-                : "The Circle is a membership of content, resources and community. It is not a therapeutic process and does not replace individual clinical consultation."}
+                ? "Los 3 tiers son membresías de contenido, recursos y comunidad. Solo el tier Verdad incluye una sesión grupal mensual con la Dra. Valencia. Ninguno reemplaza una consulta clínica individual."
+                : "All 3 tiers are content, resources and community memberships. Only the Truth tier includes a monthly group session with Dr. Valencia. None of them replace individual clinical sessions."}
             </p>
             <p className="font-body text-[14px] leading-[1.75] mb-6" style={{ color: "rgba(249,244,241,0.55)" }}>
               {lang === "es"
-                ? "Si necesitas acompañamiento clínico directo, ese espacio existe."
-                : "If you need direct clinical support, that space exists."}
+                ? "Si necesitas acompañamiento clínico directo, ese espacio existe. Los miembros Círculo y Verdad tienen descuento."
+                : "If you need direct clinical support, that space exists. Circle and Truth members get a discount."}
             </p>
             <a
               href="https://lisetvalencia.com"
@@ -536,59 +743,14 @@ export default function MembresiaPage() {
         </div>
       </section>
 
-      {/* ══════════════════ CTA CENTRAL ══ */}
-      <section id="unirse" className="relative overflow-hidden" style={{ backgroundColor: "#000000" }}>
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 50% 60% at 50% 40%, rgba(122,32,64,0.2) 0%, transparent 70%)" }} />
-
-        <div className="relative z-10 max-w-[700px] mx-auto px-6 text-center" style={{ paddingTop: "clamp(80px,10vw,120px)", paddingBottom: "clamp(80px,10vw,120px)" }}>
-
-          <p className="font-body font-semibold uppercase tracking-[0.35em] mb-6" style={{ fontSize: "10px", color: "rgba(122,32,64,0.8)" }}>
-            {lang === "es" ? "Únete hoy" : "Join today"}
-          </p>
-
-          <h2 className="font-display mb-7" style={{ fontSize: "clamp(30px, 5vw, 54px)", fontWeight: 300, lineHeight: 1.1, color: "#F9F4F1", letterSpacing: "-0.02em" }}>
-            {lang === "es"
-              ? <>Tu proceso importa.<br /><span className="italic" style={{ color: "#7A2040" }}>Tu comunidad te espera.</span></>
-              : <>Your process matters.<br /><span className="italic" style={{ color: "#7A2040" }}>Your community awaits.</span></>}
-          </h2>
-
-          {/* Mini card */}
-          <div className="mb-10">
-            <MembershipCard lang={lang} />
-          </div>
-
-          {/* Price */}
-          <p className="font-display mb-1" style={{ fontSize: "clamp(48px, 6vw, 72px)", fontWeight: 200, lineHeight: 1, color: "#F9F4F1", letterSpacing: "-0.03em" }}>$99</p>
-          <p className="font-body mb-10" style={{ fontSize: "13px", color: "rgba(249,244,241,0.35)" }}>
-            {lang === "es" ? "al mes · Cancela cuando quieras · Sin compromisos" : "per month · Cancel anytime · No commitments"}
-          </p>
-
-          {/* CTA */}
-          <a
-            href="#"
-            className="font-body font-semibold text-sm tracking-[0.04em] inline-flex items-center gap-2 transition-all duration-300"
-            style={{ padding: "18px 52px", backgroundColor: "#F9F4F1", color: "#0A0A0A", borderRadius: "100px" }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1.03)"; (e.currentTarget as HTMLElement).style.backgroundColor = "#FFFFFF"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1)"; (e.currentTarget as HTMLElement).style.backgroundColor = "#F9F4F1"; }}
-          >
-            {lang === "es" ? "Unirme al Círculo" : "Join the Circle"}
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 3L9.5 7L5.5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </a>
-
-          <p className="font-body mt-6" style={{ fontSize: "11px", color: "rgba(249,244,241,0.2)" }}>
-            {lang === "es" ? "Pago seguro con Stripe · Acceso inmediato a todos los beneficios" : "Secure payment with Stripe · Immediate access to all benefits"}
-          </p>
-        </div>
-      </section>
-
       {/* ══════════════════ FAQ ══ */}
-      <section className="px-6" style={{ paddingTop: "clamp(64px,10vw,120px)", paddingBottom: "clamp(64px,10vw,100px)" }}>
-        <div className="max-w-[680px] mx-auto">
+      <section className="px-6" style={{ paddingTop: "clamp(64px,10vw,120px)", paddingBottom: "clamp(64px,10vw,100px)", backgroundColor: "#F4E7E9" }}>
+        <div className="max-w-[720px] mx-auto">
           <div className="text-center mb-14 space-y-4">
             <p className="font-body font-semibold uppercase tracking-[0.3em]" style={{ fontSize: "10px", color: "#54132B" }}>
               {lang === "es" ? "Preguntas frecuentes" : "FAQ"}
             </p>
-            <h2 className="font-display" style={{ fontSize: "clamp(26px, 3.5vw, 42px)", fontWeight: 300, color: "#0A0A0A" }}>
+            <h2 className="font-display" style={{ fontSize: "clamp(26px, 3.5vw, 42px)", fontWeight: 300, color: "#0A0A0A", letterSpacing: "-0.01em" }}>
               {lang === "es" ? "Lo que más nos preguntan." : "What people ask most."}
             </h2>
           </div>

@@ -320,7 +320,7 @@ export default function SobrePage() {
           {/* Right — Photo */}
           <div className="hidden lg:block relative overflow-hidden" style={{ backgroundColor: LV.sand }}>
             <Image
-              src="/liset-valencia.jpg"
+              src="/images/liset-valencia.jpg"
               alt="Dra. Liset Valencia Medina"
               fill
               className="object-cover object-top photo-liset"
@@ -390,7 +390,7 @@ export default function SobrePage() {
               style={{ aspectRatio: "3/4", maxWidth: "480px" }}
             >
               <Image
-                src="/liset-valencia-hero.jpg"
+                src="/images/liset-valencia-hero.jpg"
                 alt="Dra. Liset Valencia Medina"
                 fill
                 className="object-cover object-top photo-liset"

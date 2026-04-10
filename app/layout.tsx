@@ -86,7 +86,7 @@ export const metadata: Metadata = {
     locale: "es_ES",
     images: [
       {
-        url: "/liset-valencia-hero.jpg",
+        url: "/images/liset-valencia-hero.jpg",
         width: 1200,
         height: 630,
         alt: "AUTÉNTICAMENTE® — Dra. Liset Valencia",
@@ -97,7 +97,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "AUTÉNTICAMENTE® — Reconecta contigo y activa tu poder interno",
     description: "Plataforma de desarrollo humano para hombres y mujeres que quieren crecer con más conciencia, verdad y dirección.",
-    images: ["/liset-valencia-hero.jpg"],
+    images: ["/images/liset-valencia-hero.jpg"],
   },
 };
 

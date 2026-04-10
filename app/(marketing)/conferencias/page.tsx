@@ -56,7 +56,7 @@ const eventsES = [
     location: "Bogotá, Colombia",
     priceFrom:"$380 USD",
     desc:     "Una experiencia boutique de tres días para trabajar identidad, silencio interior y transformación personal en un entorno de naturaleza y presencia plena.",
-    img:      "/raiz-conferencia.jpg",
+    img:      "/images/raiz-conferencia.jpg",
     status:   "upcoming",
   },
   {

@@ -387,7 +387,7 @@ const conferencesData = [
     tagEs: "Próximo evento",
     tagEn: "Upcoming event",
     type: "image",
-    image: "/liset-valencia-hero.jpg",
+    image: "/images/liset-valencia-hero.jpg",
     accentColor: "#54132B",
     descEs: "Un espacio íntimo y transformador para reconectarte con quién eres cuando dejas de complacer, de esconderte y de vivir para los demás. Una experiencia diseñada para que te encuentres.",
     descEn: "An intimate and transformative space to reconnect with who you are when you stop pleasing, hiding and living for others. An experience designed for you to find yourself.",
@@ -406,7 +406,7 @@ const conferencesData = [
     tagEs: "Próximo evento",
     tagEn: "Upcoming event",
     type: "image",
-    image: "/belleza-proposito.jpg",
+    image: "/images/belleza-proposito.jpg",
     accentColor: "#F4E7E9",
     descEs: "Una conferencia sobre la relación entre tu imagen, tu identidad y tu propósito. Porque cuidarte no es vanidad — es coherencia. Aprende a habitar tu cuerpo desde adentro hacia afuera.",
     descEn: "A conference on the relationship between your image, identity and purpose. Because taking care of yourself isn't vanity — it's coherence. Learn to inhabit your body from the inside out.",
@@ -425,7 +425,7 @@ const conferencesData = [
     tagEs: "Presencial",
     tagEn: "In-person",
     type: "image",
-    image: "/raiz-conferencia.jpg",
+    image: "/images/raiz-conferencia.jpg",
     accentColor: "#F4E7E9",
     descEs: "Una experiencia presencial de un día completo para ir a las raíces de lo que te mueve, te frena y te define. Trabajo profundo, comunidad real, espacio para la verdad.",
     descEn: "A full-day in-person experience to go to the roots of what moves you, holds you back and defines you. Deep work, real community, space for truth.",
@@ -444,7 +444,7 @@ const conferencesData = [
     tagEs: "Online",
     tagEn: "Online",
     type: "image",
-    image: "/am-hero.jpg",
+    image: "/images/am-hero.jpg",
     accentColor: "#F4E7E9",
     descEs: "¿Quién eres cuando nadie te está mirando? Una masterclass de 90 minutos para explorar los fundamentos de tu identidad y comenzar a vivir desde un lugar más real y más tuyo.",
     descEn: "Who are you when no one is watching? A 90-minute masterclass to explore the foundations of your identity and begin living from a more real, more authentic place.",
@@ -482,7 +482,7 @@ const conferencesData = [
     tagEs: "Virtual",
     tagEn: "Virtual",
     type: "image",
-    image: "/liset-valencia-hero.jpg",
+    image: "/images/sanar-comunidad.jpg",
     accentColor: "#F9F4F1",
     descEs: "Sanar no siempre ocurre en soledad. Esta conferencia explora cómo los vínculos, la comunidad y el acompañamiento mutuo se convierten en el espacio donde la transformación real es posible.",
     descEn: "Healing doesn't always happen in solitude. This conference explores how bonds, community and mutual support become the space where real transformation is possible.",
@@ -758,8 +758,8 @@ const masterclassData = [
     speakerName: "Dra. Liset Valencia",
     speakerRoleEs: "Psicóloga Clínica · Fundadora",
     speakerRoleEn: "Clinical Psychologist · Founder",
-    speakerImage: "/liset-valencia-hero.jpg",
-    coverImage: "/liset-valencia-hero.jpg",
+    speakerImage: "/images/liset-valencia-hero.jpg",
+    coverImage: "/images/liset-valencia-hero.jpg",
     coverPos: "center 15%",
     modulesEs: "12 módulos",
     modulesEn: "12 modules",
@@ -774,8 +774,8 @@ const masterclassData = [
     speakerName: "Melissa Payares",
     speakerRoleEs: "Comunicadora Social",
     speakerRoleEn: "Social Communicator",
-    speakerImage: "/melissa-payares.jpg",
-    coverImage: "/melissa-payares.jpg",
+    speakerImage: "/images/melissa-payares.jpg",
+    coverImage: "/images/melissa-payares.jpg",
     coverPos: "center 20%",
     modulesEs: "6 módulos",
     modulesEn: "6 modules",
@@ -790,8 +790,8 @@ const masterclassData = [
     speakerName: "Dra. Liset Valencia",
     speakerRoleEs: "Psicóloga Clínica",
     speakerRoleEn: "Clinical Psychologist",
-    speakerImage: "/liset-valencia-hero.jpg",
-    coverImage: "/liset-valencia-hero.jpg",
+    speakerImage: "/images/liset-valencia-hero.jpg",
+    coverImage: "/images/liset-valencia-hero.jpg",
     coverPos: "center 10%",
     modulesEs: "8 módulos",
     modulesEn: "8 modules",
@@ -806,8 +806,8 @@ const masterclassData = [
     speakerName: "Dra. Liset Valencia",
     speakerRoleEs: "Psicóloga Clínica",
     speakerRoleEn: "Clinical Psychologist",
-    speakerImage: "/liset-valencia-hero.jpg",
-    coverImage: "/am-hero.jpg",
+    speakerImage: "/images/liset-valencia-hero.jpg",
+    coverImage: "/images/am-hero.jpg",
     coverPos: "center 30%",
     modulesEs: "10 módulos",
     modulesEn: "10 modules",
@@ -822,8 +822,8 @@ const masterclassData = [
     speakerName: "Dra. Liset Valencia",
     speakerRoleEs: "Conferenciante",
     speakerRoleEn: "Speaker",
-    speakerImage: "/liset-valencia-hero.jpg",
-    coverImage: "/belleza-proposito.jpg",
+    speakerImage: "/images/liset-valencia-hero.jpg",
+    coverImage: "/images/belleza-proposito.jpg",
     coverPos: "center 25%",
     modulesEs: "7 módulos",
     modulesEn: "7 modules",
@@ -1144,7 +1144,7 @@ export default function HomePage() {
           />
           {/* Imagen principal */}
           <Image
-            src="/am-hero.jpg"
+            src="/images/am-hero.jpg"
             alt="AuténticaMente — Experiencias de transformación"
             fill
             className="object-cover"
@@ -1307,7 +1307,7 @@ export default function HomePage() {
         {/* Mobile — imagen bajo el texto */}
         <div className="lg:hidden relative overflow-hidden" style={{ height: "60vw", maxHeight: 380 }}>
           <Image
-            src="/am-hero.jpg"
+            src="/images/am-hero.jpg"
             alt="AuténticaMente"
             fill
             className="object-cover"

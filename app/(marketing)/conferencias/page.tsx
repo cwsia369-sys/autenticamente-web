@@ -56,7 +56,7 @@ const eventsES = [
     location: "Bogotá, Colombia",
     priceFrom:"$380 USD",
     desc:     "Una experiencia boutique de tres días para trabajar identidad, silencio interior y transformación personal en un entorno de naturaleza y presencia plena.",
-    img:      "https://lh3.googleusercontent.com/aida-public/AB6AXuCBKDoJ7hMs5JOCuAq3QVurDuOHSTJlZDxV-bTDGqgcXQ9bqgK13EEyXvi4Y7rSAD1dGZkKmv5kQJqp7WK0XDJrsybAf4Xg-zJuo-FoYQV3LYGMrs7JRKMWItUO3N1RRmJ-VRbuUF7D7KUe5gRtmF58wg69i0NwZVYJD5_8LV0MsP19VvuENy6VpHSIgMMBIh9yiZASZaZlWYBKMbwRsoZ_i5svUsPNLtI36jRsVghsebi6vev_-NN2eXYuCVjZAE2teHZ01mX3g2o",
+    img:      "/raiz-conferencia.jpg",
     status:   "upcoming",
   },
   {

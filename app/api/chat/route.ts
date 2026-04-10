@@ -37,9 +37,7 @@ REGLAS IMPORTANTES:
 - Sé auténtica — no uses lenguaje corporativo ni genérico.
 - Si no sabes algo, dilo honestamente.`;
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
@@ -51,6 +49,9 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       );
     }
+
+    // Lazy init so build doesn't fail when env var is missing
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",

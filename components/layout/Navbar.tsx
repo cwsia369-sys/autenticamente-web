@@ -172,7 +172,7 @@ export default function Navbar() {
                 <Link
                   href="/sobre"
                   className="dropdown-row flex items-center justify-between px-6 py-[11px]"
-                  style={{ fontFamily: "var(--font-am-body)", fontWeight: 500, fontSize: "12px", tracking: "0.04em" }}
+                  style={{ fontFamily: "var(--font-am-body)", fontWeight: 500, fontSize: "12px", letterSpacing: "0.04em" }}
                 >
                   <span style={{ color: "rgba(0,0,0,0.52)" }}>
                     {lang === "es" ? "Sobre nosotros" : "About us"}

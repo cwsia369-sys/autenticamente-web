@@ -1,10 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { useLang } from "@/app/providers/LangProvider";
 
+/* ──────────────────────────────────────────────────────────
+   Types
+   ────────────────────────────────────────────────────────── */
 type Category = "todos" | "ebooks" | "meditaciones" | "masterclasses" | "workbooks";
+type TierKey  = "despertar" | "circulo" | "verdad";
 
 interface ProductData {
   id: number;
@@ -14,11 +19,45 @@ interface ProductData {
   title: string;
   subtitle: string;
   desc: string;
-  price: number;
+  tier: TierKey;
   img: string;
   badgeKey: string | null;
 }
 
+/* ──────────────────────────────────────────────────────────
+   Tier config — single source of truth for the 3 membership tiers
+   Must stay in sync with /membresia
+   ────────────────────────────────────────────────────────── */
+const TIER_CONFIG: Record<TierKey, { labelEs: string; labelEn: string; priceEs: string; priceEn: string; color: string; bg: string }> = {
+  despertar: {
+    labelEs: "Despertar",
+    labelEn: "Awaken",
+    priceEs: "$19 / mes",
+    priceEn: "$19 / mo",
+    color:   "#928178",
+    bg:      "rgba(146,129,120,0.14)",
+  },
+  circulo: {
+    labelEs: "Círculo",
+    labelEn: "Circle",
+    priceEs: "$49 / mes",
+    priceEn: "$49 / mo",
+    color:   "#54132B",
+    bg:      "rgba(84,19,43,0.18)",
+  },
+  verdad: {
+    labelEs: "Verdad",
+    labelEn: "Truth",
+    priceEs: "$99 / mes",
+    priceEn: "$99 / mo",
+    color:   "#F4E7E9",
+    bg:      "rgba(244,231,233,0.12)",
+  },
+};
+
+/* ──────────────────────────────────────────────────────────
+   Format label per category (for the small chip top-right)
+   ────────────────────────────────────────────────────────── */
 const FORMAT_LABEL: Partial<Record<Category, string>> = {
   ebooks:        "PDF",
   meditaciones:  "Audio",
@@ -42,6 +81,9 @@ const CATEGORIES: { key: Category; labelKey: string }[] = [
   { key: "workbooks",     labelKey: "biblio.cat.workbooks"    },
 ];
 
+/* ──────────────────────────────────────────────────────────
+   Products — each assigned to a tier
+   ────────────────────────────────────────────────────────── */
 const PRODUCTS_ES: ProductData[] = [
   {
     id: 1, slug: "sanar-desde-dentro",
@@ -49,7 +91,7 @@ const PRODUCTS_ES: ProductData[] = [
     title:    "Sanar desde dentro",
     subtitle: "Guía para el autodescubrimiento",
     desc:     "Un viaje profundo hacia tu interior para reconciliarte con tu pasado y florecer.",
-    price: 19.99,
+    tier: "circulo",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD5Qb-OFiqcM08p3C38Y9HOMv2GvINF4W-LqYhwjCq4JEaAp-QJnIayHKbe934OD9mFmFWEuBXzqxxc9a_ePa2dn9k7Ztf9gIyFt1YEZ3GWoHlSZmUIdz3zLMjeSeot2SpNJC0r4ev1jk1gkU2nWwjT3e18NB4Kbx0nqEykF9u-MYFYmHjxNySD7zVQtwbcxDwQ_l2H1LJJNFXwebx9JUFTP7tOe4KJDQGDUMC6YuAmmNjpdEmnMhIWv3mFzn4GK2bjV8QTc8XAcvk",
     badgeKey: "biblio.badge.bestseller",
   },
@@ -59,7 +101,7 @@ const PRODUCTS_ES: ProductData[] = [
     title:    "Regulación emocional",
     subtitle: "Calma en medio del caos",
     desc:     "Audio guiado de 20 minutos con técnicas de respiración consciente.",
-    price: 12.50,
+    tier: "despertar",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCXw35Jn-1eA4JCdFFRy7U85TvOXxxO3ERcciy_Wpt7J9Tjho_L6F3Xz_9qkRimnfMOIZhRzzolF-1fDgFrR5Ts1opJ94hAz0Hl7htR7UqDpfg7hkC1J0R0eVURJHwnSkp9ar2Fu_hMTS7L5crQ5b6fTW7Djyq9pFlVI-j5SEY7sJYBPnaADXjEy-nzqx9tAVP34vH2L8A7kxYUOqwnNK5tgQ2nD-Lvw0N0fg2_SVCcFpIjLNPQuThVmfyDObyllUcIOGAzS-335eo",
     badgeKey: null,
   },
@@ -69,7 +111,7 @@ const PRODUCTS_ES: ProductData[] = [
     title:    "Reconstrucción interior",
     subtitle: "Cuaderno de ejercicios",
     desc:     "50 páginas de dinámicas prácticas para fortalecer tu autoestima y autoconocimiento.",
-    price: 24.00,
+    tier: "circulo",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBSiFY03CGEI_1Te46hNJbQa7zLKJyqfJThKcZzfhg3bxan13OBvNwD1v4IF80oMa1l5JV-Bi4Z7ku17ffqrv6z6N7P5LX6DCHQQhP3hPGgrsfndslpJxseu5fdUdj8_yqiXsKzcEsGHlv4eJP6w3iuFT9QZ-OdUAKt9g6WA9RqXuy_Dgtgi0ojBuJCrE_03lD-XDRsMEvgvqmyDk0K7oUK7CsvOXUBYizFqX0W7mATEuI1zhIrY9drcR3PrTyny-bNZ4KiIF99Nvw",
     badgeKey: null,
   },
@@ -79,7 +121,7 @@ const PRODUCTS_ES: ProductData[] = [
     title:    "Límites saludables en las relaciones",
     subtitle: "Sesión en video",
     desc:     "90 minutos para aprender a decir 'no' sin culpa y establecer vínculos desde la plenitud.",
-    price: 35.00,
+    tier: "verdad",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAbWF5xhQxRVlBDTajhpRtVfBWib9CyT2vlgF5YO4HYZ8-b76E00XEOWROtj19_YJ0UBa_SJZa9ikeAQRwgRkW1MBsM5j6S4soT-trEydhxW7JeyPfNQxUNBkQ5KbxDfRNiDFBYfsKl-AfbcDS5kGD9yYwQ6YL_u9UpGX5Yzwyt9ppzij5PMET_h8vMktn0DKWNaTuZ_qq5nd98Tw78yrbm7pbZNqygJySUMSG90JqkEhMXCCczic0ThrNrnquJoIj-60zXGKsbOFM",
     badgeKey: "biblio.badge.new",
   },
@@ -89,7 +131,7 @@ const PRODUCTS_ES: ProductData[] = [
     title:    "La mujer que olvidó su nombre",
     subtitle: "Identidad y reconexión",
     desc:     "Una guía literaria y terapéutica para reencontrar tu verdad interior después de perderte.",
-    price: 22.00,
+    tier: "circulo",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAdZJYReRdCjjkZ-YzgjCz1mz4cvfCNwI8186BrI89VFdEJA14ASbSeLumdNkTjkdSpFZ-KyrnqhqVzHkAgoSIUJ_eIiJIWlWlcslO8GR6vEN-hiTNrqO2cuXfnICg6QDxvTdHoQap0koXofc1N6OGpb40MKGX9ePGH8Hg1r2uaYbTlp6p3wOejT7V6Vx26XqEQbx4ZZrSWKTFWXNendarq2agTo-7tDL2JFJfFv775ZKOIMv_m3rrLAZhU_WPhzXMjdu5jfDOVdPk",
     badgeKey: null,
   },
@@ -99,7 +141,7 @@ const PRODUCTS_ES: ProductData[] = [
     title:    "Conciencia sin ruido",
     subtitle: "Serie de 5 audios",
     desc:     "Práctica diaria de 10 minutos para cultivar presencia plena en medio del caos cotidiano.",
-    price: 18.00,
+    tier: "despertar",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCyQqLuTF4-mPYaYy3Hm1A4CniiksqdkoUE-rawcga2S-oshBAibHFhFpNKI4K9jhxfI8QFhpvtURJfbW0-TNcc1ZExDH5IyF_m0Fjefy_ogg9rGhsObdP3qntaAjoKEEs6RbZKbNOMaizh4zdPz1qjr9iEFWyt07gXlaC3--OqXWYRhSDywIKBChvcsD46WoTI4IiEFs2Q2jjk52OCIhUhMagw6bt3UKN6pvMVlOa4Ihpr9pO5WinjeTYmQDq4A8yuKt4QtxyeAqA",
     badgeKey: null,
   },
@@ -112,7 +154,7 @@ const PRODUCTS_EN: ProductData[] = [
     title:    "Healing from Within",
     subtitle: "A guide to self-discovery",
     desc:     "A deep journey inward to reconcile with your past and flourish.",
-    price: 19.99,
+    tier: "circulo",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD5Qb-OFiqcM08p3C38Y9HOMv2GvINF4W-LqYhwjCq4JEaAp-QJnIayHKbe934OD9mFmFWEuBXzqxxc9a_ePa2dn9k7Ztf9gIyFt1YEZ3GWoHlSZmUIdz3zLMjeSeot2SpNJC0r4ev1jk1gkU2nWwjT3e18NB4Kbx0nqEykF9u-MYFYmHjxNySD7zVQtwbcxDwQ_l2H1LJJNFXwebx9JUFTP7tOe4KJDQGDUMC6YuAmmNjpdEmnMhIWv3mFzn4GK2bjV8QTc8XAcvk",
     badgeKey: "biblio.badge.bestseller",
   },
@@ -122,7 +164,7 @@ const PRODUCTS_EN: ProductData[] = [
     title:    "Emotional Regulation",
     subtitle: "Calm in the midst of chaos",
     desc:     "20-minute guided audio with conscious breathing techniques.",
-    price: 12.50,
+    tier: "despertar",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCXw35Jn-1eA4JCdFFRy7U85TvOXxxO3ERcciy_Wpt7J9Tjho_L6F3Xz_9qkRimnfMOIZhRzzolF-1fDgFrR5Ts1opJ94hAz0Hl7htR7UqDpfg7hkC1J0R0eVURJHwnSkp9ar2Fu_hMTS7L5crQ5b6fTW7Djyq9pFlVI-j5SEY7sJYBPnaADXjEy-nzqx9tAVP34vH2L8A7kxYUOqwnNK5tgQ2nD-Lvw0N0fg2_SVCcFpIjLNPQuThVmfyDObyllUcIOGAzS-335eo",
     badgeKey: null,
   },
@@ -132,7 +174,7 @@ const PRODUCTS_EN: ProductData[] = [
     title:    "Inner Reconstruction",
     subtitle: "Exercise notebook",
     desc:     "50 pages of practical exercises to strengthen your self-esteem and self-knowledge.",
-    price: 24.00,
+    tier: "circulo",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBSiFY03CGEI_1Te46hNJbQa7zLKJyqfJThKcZzfhg3bxan13OBvNwD1v4IF80oMa1l5JV-Bi4Z7ku17ffqrv6z6N7P5LX6DCHQQhP3hPGgrsfndslpJxseu5fdUdj8_yqiXsKzcEsGHlv4eJP6w3iuFT9QZ-OdUAKt9g6WA9RqXuy_Dgtgi0ojBuJCrE_03lD-XDRsMEvgvqmyDk0K7oUK7CsvOXUBYizFqX0W7mATEuI1zhIrY9drcR3PrTyny-bNZ4KiIF99Nvw",
     badgeKey: null,
   },
@@ -142,7 +184,7 @@ const PRODUCTS_EN: ProductData[] = [
     title:    "Healthy Boundaries in Relationships",
     subtitle: "Video session",
     desc:     "90 minutes to learn to say no without guilt and build connections from wholeness.",
-    price: 35.00,
+    tier: "verdad",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAbWF5xhQxRVlBDTajhpRtVfBWib9CyT2vlgF5YO4HYZ8-b76E00XEOWROtj19_YJ0UBa_SJZa9ikeAQRwgRkW1MBsM5j6S4soT-trEydhxW7JeyPfNQxUNBkQ5KbxDfRNiDFBYfsKl-AfbcDS5kGD9yYwQ6YL_u9UpGX5Yzwyt9ppzij5PMET_h8vMktn0DKWNaTuZ_qq5nd98Tw78yrbm7pbZNqygJySUMSG90JqkEhMXCCczic0ThrNrnquJoIj-60zXGKsbOFM",
     badgeKey: "biblio.badge.new",
   },
@@ -152,7 +194,7 @@ const PRODUCTS_EN: ProductData[] = [
     title:    "The Woman Who Forgot Her Name",
     subtitle: "Identity and reconnection",
     desc:     "A literary and therapeutic guide to rediscover your inner truth after losing yourself.",
-    price: 22.00,
+    tier: "circulo",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAdZJYReRdCjjkZ-YzgjCz1mz4cvfCNwI8186BrI89VFdEJA14ASbSeLumdNkTjkdSpFZ-KyrnqhqVzHkAgoSIUJ_eIiJIWlWlcslO8GR6vEN-hiTNrqO2cuXfnICg6QDxvTdHoQap0koXofc1N6OGpb40MKGX9ePGH8Hg1r2uaYbTlp6p3wOejT7V6Vx26XqEQbx4ZZrSWKTFWXNendarq2agTo-7tDL2JFJfFv775ZKOIMv_m3rrLAZhU_WPhzXMjdu5jfDOVdPk",
     badgeKey: null,
   },
@@ -162,26 +204,29 @@ const PRODUCTS_EN: ProductData[] = [
     title:    "Consciousness Without Noise",
     subtitle: "Series of 5 audios",
     desc:     "Daily 10-minute practice to cultivate full presence amid everyday chaos.",
-    price: 18.00,
+    tier: "despertar",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCyQqLuTF4-mPYaYy3Hm1A4CniiksqdkoUE-rawcga2S-oshBAibHFhFpNKI4K9jhxfI8QFhpvtURJfbW0-TNcc1ZExDH5IyF_m0Fjefy_ogg9rGhsObdP3qntaAjoKEEs6RbZKbNOMaizh4zdPz1qjr9iEFWyt07gXlaC3--OqXWYRhSDywIKBChvcsD46WoTI4IiEFs2Q2jjk52OCIhUhMagw6bt3UKN6pvMVlOa4Ihpr9pO5WinjeTYmQDq4A8yuKt4QtxyeAqA",
     badgeKey: null,
   },
 ];
 
+/* ──────────────────────────────────────────────────────────
+   ProductCard — tier-gated, no individual prices
+   ────────────────────────────────────────────────────────── */
 function ProductCard({
   product,
-  buyLabel,
   badgeLabel,
   lang,
 }: {
   product:    ProductData;
-  buyLabel:   string;
   badgeLabel: string | null;
   lang:       string;
 }) {
   const [hovered, setHovered] = useState(false);
   const format   = FORMAT_LABEL[product.category] ?? null;
   const catColor = CAT_COLOR[product.category];
+  const tierCfg  = TIER_CONFIG[product.tier];
+  const tierName = lang === "es" ? tierCfg.labelEs : tierCfg.labelEn;
 
   return (
     <article
@@ -199,7 +244,6 @@ function ProductCard({
           ? `0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px ${catColor}55`
           : "0 4px 20px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.05)",
         transform:       hovered ? "translateY(-4px)" : "translateY(0)",
-        cursor:          "pointer",
       }}
     >
       {/* ── Image ── */}
@@ -218,7 +262,7 @@ function ProductCard({
         {/* Category accent line — top */}
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", backgroundColor: catColor }} />
 
-        {/* Format chip */}
+        {/* Format chip (top right) */}
         {format && (
           <span style={{
             position:        "absolute",
@@ -240,7 +284,7 @@ function ProductCard({
           </span>
         )}
 
-        {/* Badge */}
+        {/* Highlight badge (top left) */}
         {badgeLabel && (
           <span style={{
             position:        "absolute",
@@ -282,45 +326,84 @@ function ProductCard({
 
         <div style={{ height: "1px", backgroundColor: "rgba(255,255,255,0.07)", margin: "4px 0" }} />
 
-        {/* Price + CTA */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div>
-            <span style={{ fontSize: "clamp(22px, 2.5vw, 28px)", fontFamily: "var(--font-am-display)", fontWeight: 300, color: "#FFFFFF", lineHeight: 1 }}>
-              ${product.price.toFixed(2)}
-            </span>
-            <span style={{ fontSize: "9px", fontFamily: "var(--font-am-body)", color: "rgba(255,255,255,0.3)", marginLeft: "6px", letterSpacing: "0.1em" }}>USD</span>
+        {/* Tier badge + unlock CTA */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", minWidth: 0 }}>
+            {/* Lock icon */}
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true" style={{ flexShrink: 0, color: tierCfg.color }}>
+              <rect x="3" y="6" width="8" height="6" rx="1" stroke="currentColor" strokeWidth="1" fill="none" />
+              <path d="M5 6V4.5a2 2 0 0 1 4 0V6" stroke="currentColor" strokeWidth="1" />
+            </svg>
+            <div style={{ minWidth: 0 }}>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: "9px",
+                  fontFamily: "var(--font-am-body)",
+                  fontWeight: 700,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.35)",
+                  lineHeight: 1.1,
+                }}
+              >
+                {lang === "es" ? "Incluido en" : "Included in"}
+              </p>
+              <p
+                style={{
+                  margin: "2px 0 0",
+                  fontSize: "13px",
+                  fontFamily: "var(--font-am-display)",
+                  fontStyle: "italic",
+                  color: tierCfg.color,
+                  letterSpacing: "-0.01em",
+                  lineHeight: 1.1,
+                }}
+              >
+                {tierName}
+              </p>
+            </div>
           </div>
-          <button
+
+          <Link
+            href={`/membresia#tiers`}
             style={{
-              padding:         "10px 22px",
-              backgroundColor: hovered ? catColor : "rgba(255,255,255,0.07)",
-              color:           "#FFFFFF",
-              border:          `1px solid ${hovered ? catColor : "rgba(255,255,255,0.12)"}`,
-              borderRadius:    "2px",
-              fontSize:        "11px",
+              flexShrink:      0,
+              padding:         "10px 20px",
+              backgroundColor: hovered ? tierCfg.color : "rgba(255,255,255,0.07)",
+              color:           hovered && product.tier === "verdad" ? "#0A0A0A" : "#FFFFFF",
+              border:          `1px solid ${hovered ? tierCfg.color : "rgba(255,255,255,0.12)"}`,
+              borderRadius:    "100px",
+              fontSize:        "10px",
               fontFamily:      "var(--font-am-body)",
-              fontWeight:      600,
-              letterSpacing:   "0.1em",
+              fontWeight:      700,
+              letterSpacing:   "0.14em",
               textTransform:   "uppercase",
               cursor:          "pointer",
               transition:      "all 0.25s ease",
+              textDecoration:  "none",
+              display:         "inline-flex",
+              alignItems:      "center",
+              gap:             "6px",
             }}
-            data-product-id={product.id}
-            data-product-slug={product.slug}
-            aria-label={`${buyLabel} — ${product.title}`}
+            aria-label={`${lang === "es" ? "Desbloquear" : "Unlock"} — ${product.title}`}
           >
-            {buyLabel}
-          </button>
+            {lang === "es" ? "Desbloquear" : "Unlock"}
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L6.5 5L3.5 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </Link>
         </div>
 
         <p style={{ fontSize: "9.5px", fontFamily: "var(--font-am-body)", color: "rgba(255,255,255,0.2)", letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center", margin: 0 }}>
-          {lang === "es" ? "Acceso inmediato · Digital" : "Instant access · Digital"}
+          {lang === "es" ? "Acceso inmediato con tu membresía" : "Instant access with your membership"}
         </p>
       </div>
     </article>
   );
 }
 
+/* ══════════════════════════════════════════════════════════
+   PAGE
+   ══════════════════════════════════════════════════════════ */
 export default function BibliotecaPage() {
   const { lang, t } = useLang();
   const [active, setActive] = useState<Category>("todos");
@@ -328,6 +411,13 @@ export default function BibliotecaPage() {
   const allProducts = lang === "es" ? PRODUCTS_ES : PRODUCTS_EN;
   const filtered    = active === "todos" ? allProducts : allProducts.filter((p) => p.category === active);
   const activeColor = CAT_COLOR[active];
+
+  // Count resources per tier for legend
+  const tierCounts = {
+    despertar: allProducts.filter(p => p.tier === "despertar").length,
+    circulo:   allProducts.filter(p => p.tier === "circulo").length,
+    verdad:    allProducts.filter(p => p.tier === "verdad").length,
+  };
 
   return (
     <>
@@ -367,7 +457,7 @@ export default function BibliotecaPage() {
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "14px", marginBottom: "28px" }}>
                 <span style={{ display: "inline-block", width: "40px", height: "1px", backgroundColor: "#54132B" }} />
                 <span style={{ fontSize: "10px", fontFamily: "var(--font-am-body)", fontWeight: 700, letterSpacing: "0.36em", textTransform: "uppercase", color: "#54132B" }}>
-                  {t("biblio.label")}
+                  {lang === "es" ? "Incluido en tu membresía" : "Included in your membership"}
                 </span>
                 <span style={{ display: "inline-block", width: "40px", height: "1px", backgroundColor: "#54132B" }} />
               </div>
@@ -382,22 +472,57 @@ export default function BibliotecaPage() {
                 </span>
               </h1>
 
-              <p style={{ fontSize: "clamp(14px,1.5vw,17px)", fontFamily: "var(--font-am-body)", color: "rgba(255,255,255,0.4)", lineHeight: 1.7, maxWidth: "480px", margin: "0 auto 40px" }}>
-                {t("biblio.desc")}
+              <p style={{ fontSize: "clamp(14px,1.5vw,17px)", fontFamily: "var(--font-am-body)", color: "rgba(255,255,255,0.5)", lineHeight: 1.7, maxWidth: "540px", margin: "0 auto 40px" }}>
+                {lang === "es"
+                  ? "Todo el contenido digital de AuténticaMente en un solo lugar. Cada recurso está incluido en una de las membresías — elige el tier que desbloquea lo que necesitas."
+                  : "All of AuténticaMente's digital content in one place. Every resource is included in one of the memberships — choose the tier that unlocks what you need."}
               </p>
 
-              {/* Stats row */}
-              <div style={{ display: "flex", justifyContent: "center", gap: "clamp(24px,4vw,56px)", flexWrap: "wrap" }}>
-                {[
-                  { num: allProducts.length.toString(), label: lang === "es" ? "recursos" : "resources" },
-                  { num: "4", label: lang === "es" ? "categorías" : "categories" },
-                  { num: "∞", label: lang === "es" ? "acceso inmediato" : "instant access" },
-                ].map((stat) => (
-                  <div key={stat.label} style={{ textAlign: "center" }}>
-                    <p style={{ fontSize: "clamp(28px,3.5vw,42px)", fontFamily: "var(--font-am-display)", fontWeight: 300, color: "#FFFFFF", margin: 0, lineHeight: 1 }}>{stat.num}</p>
-                    <p style={{ fontSize: "10px", fontFamily: "var(--font-am-body)", color: "rgba(255,255,255,0.3)", letterSpacing: "0.18em", textTransform: "uppercase", margin: "6px 0 0" }}>{stat.label}</p>
-                  </div>
-                ))}
+              {/* Tier legend */}
+              <div style={{ display: "flex", justifyContent: "center", gap: "clamp(16px,3vw,36px)", flexWrap: "wrap", marginBottom: "8px" }}>
+                {(Object.keys(TIER_CONFIG) as TierKey[]).map((key) => {
+                  const cfg = TIER_CONFIG[key];
+                  return (
+                    <div key={key} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "50%",
+                          backgroundColor: cfg.color,
+                          boxShadow: `0 0 0 3px ${cfg.bg}`,
+                        }}
+                      />
+                      <div style={{ textAlign: "left" }}>
+                        <p
+                          style={{
+                            margin: 0,
+                            fontSize: "11px",
+                            fontFamily: "var(--font-am-display)",
+                            fontStyle: "italic",
+                            color: "#FFFFFF",
+                            lineHeight: 1.1,
+                          }}
+                        >
+                          {lang === "es" ? cfg.labelEs : cfg.labelEn}
+                        </p>
+                        <p
+                          style={{
+                            margin: 0,
+                            fontSize: "9px",
+                            fontFamily: "var(--font-am-body)",
+                            color: "rgba(255,255,255,0.3)",
+                            letterSpacing: "0.14em",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {tierCounts[key]} {lang === "es" ? "recursos" : "resources"}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -447,13 +572,12 @@ export default function BibliotecaPage() {
               );
             })}
           </div>
-          {/* Color accent line that transitions with active category */}
           <div style={{ height: "1px", backgroundColor: activeColor, transition: "background-color 0.4s ease", marginTop: "-1px" }} />
         </nav>
 
         {/* ══ GRID ══ */}
         <section
-          aria-label={lang === "es" ? "Productos digitales" : "Digital products"}
+          aria-label={lang === "es" ? "Recursos digitales" : "Digital resources"}
           style={{ padding: "60px 24px 80px" }}
         >
           <div className="max-w-[1100px] mx-auto">
@@ -480,7 +604,6 @@ export default function BibliotecaPage() {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  buyLabel={t("biblio.buy")}
                   badgeLabel={product.badgeKey ? t(product.badgeKey) : null}
                   lang={lang}
                 />
@@ -489,25 +612,138 @@ export default function BibliotecaPage() {
           </div>
         </section>
 
+        {/* ══ MEMBERSHIP MODEL EXPLAINER ══ */}
+        <section style={{ position: "relative", padding: "clamp(80px,10vw,120px) 24px" }}>
+          <div className="max-w-[900px] mx-auto" style={{ textAlign: "center" }}>
+            <p style={{ fontSize: "10px", fontFamily: "var(--font-am-body)", fontWeight: 700, letterSpacing: "0.36em", textTransform: "uppercase", color: "rgba(122,32,64,0.85)", marginBottom: "20px" }}>
+              {lang === "es" ? "Cómo funciona" : "How it works"}
+            </p>
+            <h2
+              style={{
+                fontSize: "clamp(32px,5vw,56px)",
+                fontFamily: "var(--font-am-display)",
+                fontWeight: 300,
+                color: "#FFFFFF",
+                lineHeight: 1.1,
+                letterSpacing: "-0.025em",
+                marginBottom: "20px",
+              }}
+            >
+              {lang === "es" ? (
+                <>Una membresía.<br /><span style={{ fontStyle: "italic", color: "#7A2040" }}>Todo el contenido.</span></>
+              ) : (
+                <>One membership.<br /><span style={{ fontStyle: "italic", color: "#7A2040" }}>All the content.</span></>
+              )}
+            </h2>
+            <p style={{ fontSize: "clamp(14px,1.4vw,17px)", fontFamily: "var(--font-am-body)", color: "rgba(255,255,255,0.55)", lineHeight: 1.75, maxWidth: "640px", margin: "0 auto 36px" }}>
+              {lang === "es"
+                ? "Elige el tier que se adapta a tu momento. Si quieres más profundidad, haz upgrade en cualquier momento y desbloqueas todo el contenido del siguiente nivel al instante."
+                : "Choose the tier that fits your moment. If you want more depth, upgrade anytime and unlock all of the next level's content instantly."}
+            </p>
+
+            {/* 3 tier mini-cards */}
+            <div style={{ display: "grid", gap: "12px", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", marginBottom: "48px", maxWidth: "760px", marginLeft: "auto", marginRight: "auto" }}>
+              {(Object.keys(TIER_CONFIG) as TierKey[]).map((key) => {
+                const cfg = TIER_CONFIG[key];
+                return (
+                  <div
+                    key={key}
+                    style={{
+                      padding: "22px 20px",
+                      backgroundColor: "#111111",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: "3px",
+                      textAlign: "left",
+                    }}
+                  >
+                    <p
+                      style={{
+                        margin: 0,
+                        fontSize: "22px",
+                        fontFamily: "var(--font-am-display)",
+                        fontStyle: "italic",
+                        fontWeight: 300,
+                        color: cfg.color,
+                        letterSpacing: "-0.01em",
+                        lineHeight: 1,
+                      }}
+                    >
+                      {lang === "es" ? cfg.labelEs : cfg.labelEn}
+                    </p>
+                    <p
+                      style={{
+                        margin: "6px 0 12px",
+                        fontSize: "11px",
+                        fontFamily: "var(--font-am-body)",
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        color: "rgba(255,255,255,0.35)",
+                      }}
+                    >
+                      {lang === "es" ? cfg.priceEs : cfg.priceEn}
+                    </p>
+                    <p
+                      style={{
+                        margin: 0,
+                        fontSize: "11px",
+                        fontFamily: "var(--font-am-body)",
+                        color: "rgba(255,255,255,0.45)",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {tierCounts[key]} {lang === "es" ? "recursos en biblioteca" : "library resources"}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* CTA row */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px" }}>
+              <Link
+                href="/membresia#tiers"
+                style={{
+                  display:         "inline-flex",
+                  alignItems:      "center",
+                  gap:             "8px",
+                  padding:         "16px 44px",
+                  backgroundColor: "#F9F4F1",
+                  color:           "#0A0A0A",
+                  borderRadius:    "100px",
+                  fontSize:        "13px",
+                  fontFamily:      "var(--font-am-body)",
+                  fontWeight:      600,
+                  letterSpacing:   "0.04em",
+                  textDecoration:  "none",
+                  transition:      "transform 0.3s ease",
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1.03)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "scale(1)"; }}
+              >
+                {lang === "es" ? "Ver las 3 membresías" : "View the 3 memberships"}
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 3L9.5 7L5.5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </Link>
+              <p style={{ fontSize: "11px", fontFamily: "var(--font-am-body)", color: "rgba(255,255,255,0.28)", letterSpacing: "0.1em" }}>
+                {lang === "es" ? "Desde $19/mes · Cancela cuando quieras" : "From $19/mo · Cancel anytime"}
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* ══ TRUST STRIP ══ */}
         <section style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "32px 24px" }}>
           <div className="max-w-[1100px] mx-auto" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "32px 48px" }}>
             {[
-              { icon: "🔒", label: lang === "es" ? "Pago cifrado" : "Secure payment" },
-              { icon: "⚡", label: lang === "es" ? "Acceso inmediato" : "Instant access" },
-              { icon: "📱", label: lang === "es" ? "Todos los dispositivos" : "All devices" },
-              { icon: "↩", label: lang === "es" ? "Sin suscripción" : "No subscription" },
+              { label: lang === "es" ? "Incluido en membresía" : "Included in membership" },
+              { label: lang === "es" ? "Acceso inmediato" : "Instant access" },
+              { label: lang === "es" ? "Todos los dispositivos" : "All devices" },
+              { label: lang === "es" ? "Cancela cuando quieras" : "Cancel anytime" },
             ].map((item) => (
               <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <span style={{ fontSize: "14px" }}>{item.icon}</span>
+                <span style={{ display: "inline-block", width: "4px", height: "4px", borderRadius: "50%", backgroundColor: "#54132B" }} />
                 <span style={{ fontSize: "11px", fontFamily: "var(--font-am-body)", color: "rgba(255,255,255,0.3)", letterSpacing: "0.14em", textTransform: "uppercase" }}>{item.label}</span>
               </div>
             ))}
-            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", justifyContent: "center" }}>
-              {["Stripe", "Visa", "Mastercard", "Apple Pay"].map((m) => (
-                <span key={m} style={{ padding: "4px 12px", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "2px", fontSize: "9px", fontFamily: "var(--font-am-body)", color: "rgba(255,255,255,0.25)", letterSpacing: "0.14em" }}>{m}</span>
-              ))}
-            </div>
           </div>
         </section>
       </div>

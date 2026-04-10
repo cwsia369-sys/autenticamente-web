@@ -72,40 +72,66 @@ export default function Footer() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
 
           {/* Brand column */}
-          <div className="sm:col-span-2 lg:col-span-1 space-y-6">
-            <Link href="/" aria-label="AuténticaMente — inicio">
+          <div className="sm:col-span-2 lg:col-span-1 space-y-7">
+            <Link href="/" aria-label="AuténticaMente — inicio" className="inline-block">
               <Image
                 src="/logos/am-wordmark-white.svg"
                 alt="AuténticaMente®"
-                width={160}
-                height={56}
-                style={{ height: "26px", width: "auto", opacity: 0.7 }}
+                width={260}
+                height={92}
+                style={{ height: "52px", width: "auto", opacity: 0.95 }}
               />
             </Link>
             <p
               className="text-[13px] leading-[1.7]"
-              style={{ fontFamily: "var(--font-am-body)", color: "rgba(255,255,255,0.38)" }}
+              style={{ fontFamily: "var(--font-am-body)", color: "rgba(255,255,255,0.42)", maxWidth: "280px" }}
             >
               {lang === "es"
                 ? "Plataforma de desarrollo humano para quienes quieren crecer con más conciencia, verdad y dirección."
                 : "Human development platform for those who want to grow with more awareness, truth and direction."}
             </p>
 
-            {/* Social */}
-            <div className="flex items-center gap-5">
+            {/* Social — all icons same size */}
+            <div className="flex items-center gap-4 pt-1">
               {[
-                { label: "Instagram", href: "#", icon: (
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3">
-                    <rect x="2" y="2" width="20" height="20" rx="5" />
-                    <circle cx="12" cy="12" r="5" />
-                    <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
-                  </svg>
-                )},
-                { label: "TikTok", href: "#", icon: (
-                  <svg width="13" height="15" viewBox="0 0 24 27" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
-                    <path d="M9 13.5a7.5 7.5 0 1 0 7.5 7.5V4a5.5 5.5 0 0 0 5.5 5.5" />
-                  </svg>
-                )},
+                {
+                  label: "Instagram",
+                  href: "https://instagram.com/autenticamente",
+                  icon: (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" />
+                      <circle cx="12" cy="12" r="4.5" />
+                      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: "TikTok",
+                  href: "https://tiktok.com/@autenticamente",
+                  icon: (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.1z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: "Spotify",
+                  href: "https://open.spotify.com/show/autenticamente",
+                  icon: (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.959-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.361 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: "YouTube",
+                  href: "https://youtube.com/@autenticamente",
+                  icon: (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                    </svg>
+                  ),
+                },
               ].map(({ label, href, icon }) => (
                 <a
                   key={label}
@@ -113,31 +139,26 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  style={{ color: "rgba(255,255,255,0.3)", transition: "color 0.2s ease" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#F4E7E9")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.3)")}
+                  className="flex items-center justify-center transition-all duration-200"
+                  style={{
+                    width: "38px",
+                    height: "38px",
+                    borderRadius: "50%",
+                    backgroundColor: "rgba(255,255,255,0.05)",
+                    color: "rgba(255,255,255,0.55)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "#F4E7E9";
+                    e.currentTarget.style.backgroundColor = "rgba(244,231,233,0.12)";
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "rgba(255,255,255,0.55)";
+                    e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.05)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
                 >
                   {icon}
-                </a>
-              ))}
-              {["Spotify", "YouTube"].map((platform) => (
-                <a
-                  key={platform}
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[10.5px] uppercase tracking-[0.1em]"
-                  style={{
-                    fontFamily: "var(--font-am-body)",
-                    fontWeight: 600,
-                    color: "rgba(255,255,255,0.3)",
-                    textDecoration: "none",
-                    transition: "color 0.2s ease",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#F4E7E9")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.3)")}
-                >
-                  {platform}
                 </a>
               ))}
             </div>

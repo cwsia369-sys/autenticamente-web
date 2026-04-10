@@ -1319,19 +1319,24 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Scroll indicator — bottom center, subtle bounce */}
+        {/* Scroll indicator — Apple/Stripe-style mouse + chevron, clicks to next section */}
         <button
           onClick={() => {
+            // Find the next <section> after the hero (skipping <style> blocks etc.)
             const heroSection = document.querySelector("section");
-            const next = heroSection?.nextElementSibling as HTMLElement | null;
+            let next: Element | null = heroSection?.nextElementSibling ?? null;
+            while (next && next.tagName !== "SECTION") {
+              next = next.nextElementSibling;
+            }
             if (next) {
-              window.scrollTo({ top: next.offsetTop - 80, behavior: "smooth" });
+              const top = (next as HTMLElement).getBoundingClientRect().top + window.scrollY - 70;
+              window.scrollTo({ top, behavior: "smooth" });
             } else {
               window.scrollBy({ top: window.innerHeight - 100, behavior: "smooth" });
             }
           }}
           aria-label={lang === "es" ? "Desplazar hacia abajo" : "Scroll down"}
-          className="hidden lg:flex absolute left-1/2 -translate-x-1/2 z-20 flex-col items-center gap-2 group"
+          className="hidden lg:flex absolute left-1/2 -translate-x-1/2 z-20 flex-col items-center gap-3 group"
           style={{
             bottom: "32px",
             background: "transparent",
@@ -1341,36 +1346,59 @@ export default function HomePage() {
           }}
         >
           <span
-            className="font-body uppercase tracking-[0.28em] transition-opacity duration-300 group-hover:opacity-100"
-            style={{ fontSize: "9px", color: "rgba(0,0,0,0.42)", opacity: 0.7 }}
+            className="font-body uppercase transition-opacity duration-300 group-hover:opacity-100"
+            style={{ fontSize: "9px", letterSpacing: "0.3em", color: "rgba(0,0,0,0.45)", opacity: 0.8 }}
           >
             {lang === "es" ? "Descubre" : "Discover"}
           </span>
+
+          {/* Mouse outline + dot animation */}
           <span
-            className="flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+            className="relative flex items-start justify-center transition-all duration-300 group-hover:scale-110"
             style={{
-              width: "38px",
-              height: "38px",
-              borderRadius: "50%",
-              border: "1px solid rgba(84,19,43,0.25)",
-              backgroundColor: "rgba(255,255,255,0.4)",
-              backdropFilter: "blur(4px)",
-              animation: "scrollBounce 2.2s ease-in-out infinite",
+              width: "22px",
+              height: "36px",
+              borderRadius: "12px",
+              border: "1.4px solid rgba(84,19,43,0.55)",
+              padding: "6px 0",
             }}
           >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M3 5L7 9L11 5" stroke="#54132B" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <span
+              className="block"
+              style={{
+                width: "2px",
+                height: "6px",
+                borderRadius: "1px",
+                backgroundColor: "#54132B",
+                animation: "scrollDot 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite",
+              }}
+            />
           </span>
+
+          {/* Tiny chevron below the mouse — extra hint */}
+          <svg
+            width="14"
+            height="6"
+            viewBox="0 0 14 6"
+            fill="none"
+            style={{ marginTop: "-4px", animation: "scrollChevron 1.8s ease-in-out infinite", opacity: 0.6 }}
+          >
+            <path d="M1 1L7 5L13 1" stroke="#54132B" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </button>
 
         <style jsx>{`
-          @keyframes scrollBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(6px); }
+          @keyframes scrollDot {
+            0%   { transform: translateY(0);    opacity: 1; }
+            50%  { transform: translateY(10px); opacity: 0.3; }
+            100% { transform: translateY(0);    opacity: 1; }
+          }
+          @keyframes scrollChevron {
+            0%, 100% { transform: translateY(0);   opacity: 0.4; }
+            50%      { transform: translateY(3px); opacity: 0.9; }
           }
           @keyframes scrollIndicatorFade {
-            0% { opacity: 0; transform: translate(-50%, 12px); }
+            0%   { opacity: 0; transform: translate(-50%, 12px); }
             100% { opacity: 1; transform: translate(-50%, 0); }
           }
         `}</style>

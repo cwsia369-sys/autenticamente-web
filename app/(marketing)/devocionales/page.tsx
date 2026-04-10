@@ -1227,7 +1227,14 @@ export default function DevocionalesPage() {
         <div className="relative z-10 max-w-[860px] mx-auto px-6 flex flex-col items-center justify-center text-center min-h-[84vh] gap-9">
           {/* Eyebrow */}
           <div className="flex items-center gap-3 px-5 py-2" style={{ border: "1px solid rgba(146,129,120,0.22)", backgroundColor: "rgba(249,244,241,0.03)" }}>
-            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "#54132B" }} />
+            {/* Live pulse dot */}
+            <span className="relative flex items-center justify-center" style={{ width: 12, height: 12 }}>
+              <span
+                className="absolute inline-flex rounded-full animate-ping"
+                style={{ width: 12, height: 12, backgroundColor: "#54132B", opacity: 0.55 }}
+              />
+              <span className="relative rounded-full" style={{ width: 6, height: 6, backgroundColor: "#54132B" }} />
+            </span>
             <span className="text-[10px] uppercase tracking-[0.28em] font-body" style={{ color: "rgba(249,244,241,0.4)" }}>
               {es ? "Jornada anual · 365 devocionales" : "Annual journey · 365 devotionals"}
             </span>

@@ -111,15 +111,12 @@ export default function AudiosPage() {
         className="relative overflow-hidden"
         style={{ backgroundColor: "#0A0A0A", minHeight: "540px" }}
       >
-        {/* Background texture — subtle waveform */}
+        {/* Background texture — subtle waveform (static values to avoid hydration mismatch) */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none" style={{ opacity: 0.04 }}>
           <svg width="1400" height="400" viewBox="0 0 1400 400" fill="none">
-            {Array.from({ length: 80 }).map((_, i) => {
-              const h = 20 + Math.sin(i * 0.4) * 60 + Math.sin(i * 0.15) * 80;
-              return (
-                <rect key={i} x={i * 18} y={(400 - h) / 2} width="10" height={h} rx="5" fill="#F9F4F1" />
-              );
-            })}
+            {[97,120,148,170,180,176,160,138,114,94,82,80,88,104,126,150,170,180,178,164,142,118,96,82,78,84,98,118,142,164,178,180,170,152,130,108,90,80,80,90,106,128,150,168,178,180,168,148,124,102,86,80,82,92,110,132,154,172,180,176,162,140,116,96,82,80,84,96,114,138,158,174,180,174,158,136,112,92,82,80].map((h, i) => (
+              <rect key={i} x={i * 18} y={(400 - h) / 2} width="10" height={h} rx="5" fill="#F9F4F1" />
+            ))}
           </svg>
         </div>
 
@@ -378,65 +375,149 @@ export default function AudiosPage() {
         </div>
       </section>
 
-      {/* ══════════════════════════ CTA MEMBRESÍA ══ */}
-      <section className="py-24 px-6 lg:px-8" style={{ backgroundColor: "#F4E7E9" }}>
-        <div className="max-w-[1100px] mx-auto">
-          <div
-            className="relative overflow-hidden"
-            style={{ backgroundColor: "#0A0A0A", borderRadius: "3px", padding: "clamp(40px,6vw,80px) clamp(32px,5vw,72px)" }}
+      {/* ══════════════════════════ CTA MEMBRESÍA — Apple-style ══ */}
+      <section
+        className="relative overflow-hidden"
+        style={{ backgroundColor: "#000000" }}
+      >
+        {/* Ambient glow — soft radial from center */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 50% 60% at 50% 40%, rgba(122,32,64,0.25) 0%, transparent 70%)" }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 40% at 50% 100%, rgba(84,19,43,0.15) 0%, transparent 60%)" }} />
+
+        <div className="relative z-10 max-w-[900px] mx-auto px-6 lg:px-8 text-center" style={{ paddingTop: "clamp(80px,12vw,140px)", paddingBottom: "clamp(80px,12vw,140px)" }}>
+
+          {/* Supertitle */}
+          <p className="font-body font-semibold uppercase tracking-[0.35em] mb-6" style={{ fontSize: "10px", color: "#7A2040" }}>
+            {lang === "es" ? "Membresía" : "Membership"}
+          </p>
+
+          {/* Main headline — Apple-style giant type */}
+          <h2
+            className="font-display"
+            style={{
+              fontSize: "clamp(36px, 6.5vw, 80px)",
+              fontWeight: 300,
+              lineHeight: 1.06,
+              letterSpacing: "-0.025em",
+              color: "#F9F4F1",
+            }}
           >
-            {/* Decorative circles */}
-            <svg className="absolute pointer-events-none select-none right-0 top-0 w-[360px] h-[360px] opacity-[0.07]" viewBox="0 0 360 360" fill="none" aria-hidden="true">
-              <circle cx="360" cy="0" r="180" stroke="#F9F4F1" strokeWidth="0.5" />
-              <circle cx="360" cy="0" r="120" stroke="#F9F4F1" strokeWidth="0.5" />
-              <circle cx="360" cy="0" r="60"  stroke="#F9F4F1" strokeWidth="0.5" />
-            </svg>
+            {lang === "es" ? (
+              <>Todo lo que necesitas.<br /><span className="italic" style={{ color: "#7A2040" }}>Un solo lugar.</span></>
+            ) : (
+              <>Everything you need.<br /><span className="italic" style={{ color: "#7A2040" }}>One place.</span></>
+            )}
+          </h2>
 
-            {/* Accent line top */}
-            <div className="absolute top-0 left-0 right-0 h-[1px]" style={{ background: "linear-gradient(90deg, #54132B, transparent)" }} />
+          {/* Subtitle */}
+          <p
+            className="font-body leading-relaxed mx-auto mt-7"
+            style={{
+              fontSize: "clamp(15px, 1.4vw, 18px)",
+              color: "rgba(249,244,241,0.5)",
+              maxWidth: "520px",
+            }}
+          >
+            {lang === "es"
+              ? "Audios, meditaciones, conferencias, devocionales y la comunidad que necesitas para no hacerlo sola."
+              : "Audios, meditations, conferences, devotionals and the community you need so you don't do it alone."}
+          </p>
 
-            <div className="relative z-10 grid md:grid-cols-[1fr_auto] gap-12 items-center">
-              <div className="space-y-5">
-                <p className="text-[9px] uppercase tracking-[0.32em] font-body font-semibold" style={{ color: "rgba(84,19,43,0.65)" }}>
-                  {lang === "es" ? "Círculo Vuelve a Ti" : "Return to Yourself Circle"}
-                </p>
-                <h2 className="font-display leading-tight" style={{ fontSize: "clamp(26px, 3.5vw, 46px)", fontWeight: 300, color: "#F9F4F1" }}>
-                  {lang === "es"
-                    ? <>Accede a toda la biblioteca<br /><span className="italic" style={{ color: "#7A2040" }}>sin límites.</span></>
-                    : <>Access the entire library<br /><span className="italic" style={{ color: "#7A2040" }}>without limits.</span></>}
-                </h2>
-                <p className="font-body text-sm leading-relaxed" style={{ color: "rgba(249,244,241,0.5)", maxWidth: "480px" }}>
-                  {lang === "es"
-                    ? "Los miembros del Círculo tienen acceso completo a todos los audios, meditaciones y contenidos exclusivos — más conferencias, devocionales y recursos ilimitados."
-                    : "Circle members have full access to all audios, meditations and exclusive content — plus conferences, devotionals and unlimited resources."}
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-5 min-w-[200px]">
-                <div>
-                  <p className="font-display" style={{ fontSize: "clamp(40px, 4vw, 56px)", fontWeight: 300, color: "#F9F4F1", lineHeight: 1 }}>
-                    $27
-                    <span className="font-body text-sm font-light" style={{ color: "rgba(249,244,241,0.38)" }}>
-                      {" "}/ {lang === "es" ? "mes" : "month"}
-                    </span>
-                  </p>
-                  <p className="text-[9px] font-body mt-2 tracking-[0.16em] uppercase" style={{ color: "rgba(249,244,241,0.28)" }}>
-                    {lang === "es" ? "Cancela cuando quieras" : "Cancel anytime"}
-                  </p>
-                </div>
-                <Link
-                  href="/membresia"
-                  className="text-center py-4 text-sm font-body font-semibold uppercase tracking-[0.1em] transition-opacity hover:opacity-85"
-                  style={{ backgroundColor: "#54132B", color: "#F9F4F1", borderRadius: "2px" }}
-                >
-                  {lang === "es" ? "Unirme al Círculo →" : "Join the Circle →"}
-                </Link>
-                <p className="text-center text-[9px] font-body uppercase tracking-[0.14em]" style={{ color: "rgba(249,244,241,0.2)" }}>
-                  {lang === "es" ? "Acceso inmediato" : "Immediate access"}
-                </p>
-              </div>
-            </div>
+          {/* Feature pills */}
+          <div className="flex flex-wrap justify-center gap-3 mt-10">
+            {(lang === "es"
+              ? ["9+ Audios", "Meditaciones", "Conferencias", "Devocionales", "Comunidad"]
+              : ["9+ Audios", "Meditations", "Conferences", "Devotionals", "Community"]
+            ).map((item) => (
+              <span
+                key={item}
+                className="font-body text-[10px] uppercase tracking-[0.12em] font-semibold"
+                style={{
+                  padding: "7px 16px",
+                  border: "1px solid rgba(122,32,64,0.3)",
+                  borderRadius: "100px",
+                  color: "rgba(249,244,241,0.45)",
+                }}
+              >
+                {item}
+              </span>
+            ))}
           </div>
+
+          {/* Divider line */}
+          <div className="mx-auto mt-14 mb-12" style={{ width: "40px", height: "1px", backgroundColor: "rgba(122,32,64,0.5)" }} />
+
+          {/* Price display — large, confident */}
+          <div className="mb-10">
+            <p
+              className="font-display"
+              style={{
+                fontSize: "clamp(52px, 7vw, 88px)",
+                fontWeight: 200,
+                lineHeight: 1,
+                color: "#F9F4F1",
+                letterSpacing: "-0.03em",
+              }}
+            >
+              $27
+            </p>
+            <p className="font-body mt-2" style={{ fontSize: "14px", color: "rgba(249,244,241,0.35)", fontWeight: 400 }}>
+              {lang === "es" ? "al mes · Cancela cuando quieras" : "per month · Cancel anytime"}
+            </p>
+          </div>
+
+          {/* CTA buttons — Apple dual-button style */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/membresia"
+              className="font-body font-semibold text-sm tracking-[0.04em] transition-all duration-300"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "16px 40px",
+                backgroundColor: "#F9F4F1",
+                color: "#0A0A0A",
+                borderRadius: "100px",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.backgroundColor = "#FFFFFF";
+                (e.currentTarget as HTMLElement).style.transform = "scale(1.03)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.backgroundColor = "#F9F4F1";
+                (e.currentTarget as HTMLElement).style.transform = "scale(1)";
+              }}
+            >
+              {lang === "es" ? "Unirme al Círculo" : "Join the Circle"}
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M5.5 3L9.5 7L5.5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+            <Link
+              href="/membresia"
+              className="font-body text-sm tracking-[0.02em] transition-all duration-300"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "16px 32px",
+                color: "#7A9FFF",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = "0.7"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
+            >
+              {lang === "es" ? "Conocer más" : "Learn more"}
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </div>
+
+          {/* Trust line */}
+          <p className="font-body mt-10" style={{ fontSize: "11px", color: "rgba(249,244,241,0.18)" }}>
+            {lang === "es" ? "Acceso inmediato a todos los beneficios. Sin compromisos." : "Immediate access to all benefits. No commitments."}
+          </p>
         </div>
       </section>
     </div>

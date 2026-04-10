@@ -384,6 +384,7 @@ export default function Navbar() {
 
 // ── LV Button component ──────────────────────────────────────────────────────
 function LVButton({ lang }: { lang: string }) {
+  void lang;
   const [hovered, setHovered] = useState(false);
   return (
     <Link
@@ -391,32 +392,24 @@ function LVButton({ lang }: { lang: string }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        display: "flex", alignItems: "center", gap: "8px",
-        padding: "7px 14px",
-        border: `1px solid ${hovered ? "#54132B" : "rgba(84,19,43,0.28)"}`,
-        borderRadius: "2px",
-        backgroundColor: hovered ? "#54132B" : "transparent",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        width: "36px", height: "36px",
+        borderRadius: "50%",
+        backgroundColor: hovered ? "#54132B" : "rgba(84,19,43,0.08)",
         textDecoration: "none",
-        transition: "background-color 0.2s ease, border-color 0.2s ease",
+        transition: "background-color 0.25s ease, transform 0.25s ease",
+        transform: hovered ? "scale(1.08)" : "scale(1)",
       }}
+      aria-label="Dra. Liset Valencia"
     >
       <span style={{
         fontFamily: "var(--font-am-display)",
-        fontSize: "14px", fontWeight: 400, fontStyle: "italic",
-        letterSpacing: "0.04em", lineHeight: 1,
+        fontSize: "13px", fontWeight: 500, fontStyle: "italic",
+        letterSpacing: "0.02em", lineHeight: 1,
         color: hovered ? "#F4E7E9" : "#54132B",
-        transition: "color 0.2s",
+        transition: "color 0.25s",
       }}>
         LV
-      </span>
-      <span style={{
-        fontFamily: "var(--font-am-body)",
-        fontSize: "9px", fontWeight: 600,
-        letterSpacing: "0.12em", textTransform: "uppercase", lineHeight: 1,
-        color: hovered ? "rgba(244,231,233,0.8)" : "rgba(84,19,43,0.6)",
-        transition: "color 0.2s",
-      }}>
-        {lang === "es" ? "Dra. Liset" : "Dr. Liset"}
       </span>
     </Link>
   );

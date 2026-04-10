@@ -70,8 +70,13 @@ export default function Navbar() {
       }}
     >
       <div
-        className="mx-auto px-8 lg:px-14 flex items-center justify-between"
-        style={{ maxWidth: "1400px", height: navH, transition: "height 0.35s ease" }}
+        className="mx-auto px-8 lg:px-14 flex items-center justify-between lg:grid lg:gap-6"
+        style={{
+          maxWidth: "1400px",
+          height: navH,
+          transition: "height 0.35s ease",
+          gridTemplateColumns: "auto 1fr auto",
+        }}
       >
 
         {/* ── Logo ─────────────────────────────────────────── */}
@@ -92,9 +97,9 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* ── Desktop nav — centrado ───────────────────────── */}
+        {/* ── Desktop nav — grid column center ─────────────── */}
         <nav
-          className="hidden lg:flex items-center gap-7 absolute left-1/2 -translate-x-1/2"
+          className="hidden lg:flex items-center gap-7 justify-center"
           aria-label="Navegación principal"
         >
           {navLinks.map(({ key, href }) => (

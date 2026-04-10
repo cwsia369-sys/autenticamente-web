@@ -167,15 +167,15 @@ export default function Navbar() {
                   </Link>
                 ))}
 
-                {/* LV en dropdown — separador */}
+                {/* Iniciar test en dropdown — separador */}
                 <div style={{ height: "1px", backgroundColor: "rgba(0,0,0,0.06)", margin: "4px 0" }} />
                 <Link
-                  href="/sobre"
+                  href="/test"
                   className="dropdown-row flex items-center justify-between px-6 py-[11px]"
                   style={{ fontFamily: "var(--font-am-body)", fontWeight: 500, fontSize: "12px", letterSpacing: "0.04em" }}
                 >
                   <span style={{ color: "rgba(0,0,0,0.52)" }}>
-                    {lang === "es" ? "Sobre nosotros" : "About us"}
+                    {lang === "es" ? "Iniciar test" : "Start test"}
                   </span>
                 </Link>
               </div>
@@ -382,7 +382,7 @@ export default function Navbar() {
   );
 }
 
-// ── LV Button component ──────────────────────────────────────────────────────
+// ── LV Button component — "Liset Valencia" con tipografía de su marca ─────
 function LVButton({ lang }: { lang: string }) {
   void lang;
   const [hovered, setHovered] = useState(false);
@@ -392,24 +392,29 @@ function LVButton({ lang }: { lang: string }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        display: "flex", alignItems: "center", justifyContent: "center",
-        width: "36px", height: "36px",
-        borderRadius: "50%",
-        backgroundColor: hovered ? "#54132B" : "rgba(84,19,43,0.08)",
+        display: "inline-flex", alignItems: "center", justifyContent: "center",
+        padding: "8px 16px",
+        borderRadius: "100px",
+        border: `1px solid ${hovered ? "#54132B" : "rgba(84,19,43,0.22)"}`,
+        backgroundColor: hovered ? "#54132B" : "transparent",
         textDecoration: "none",
-        transition: "background-color 0.25s ease, transform 0.25s ease",
-        transform: hovered ? "scale(1.08)" : "scale(1)",
+        transition: "background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease",
+        transform: hovered ? "scale(1.04)" : "scale(1)",
+        whiteSpace: "nowrap",
       }}
       aria-label="Dra. Liset Valencia"
     >
       <span style={{
-        fontFamily: "var(--font-am-display)",
-        fontSize: "13px", fontWeight: 500, fontStyle: "italic",
-        letterSpacing: "0.02em", lineHeight: 1,
+        fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif",
+        fontSize: "15px",
+        fontWeight: 400,
+        fontStyle: "italic",
+        letterSpacing: "0.01em",
+        lineHeight: 1,
         color: hovered ? "#F4E7E9" : "#54132B",
         transition: "color 0.25s",
       }}>
-        LV
+        Liset Valencia
       </span>
     </Link>
   );

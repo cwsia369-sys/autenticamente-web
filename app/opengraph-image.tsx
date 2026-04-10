@@ -19,38 +19,17 @@ export default function OGImage() {
           overflow: "hidden",
         }}
       >
-        {/* Grid lines */}
-        <svg
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.08 }}
-        >
-          {[0,1,2,3,4,5,6,7,8,9,10,11,12].map((i) => (
-            <line
-              key={`v${i}`}
-              x1={`${(i / 12) * 100}%`} y1="0"
-              x2={`${(i / 12) * 100}%`} y2="100%"
-              stroke="#928178" strokeWidth="0.8"
-            />
-          ))}
-          {[0,1,2,3,4,5,6].map((i) => (
-            <line
-              key={`h${i}`}
-              x1="0" y1={`${(i / 6) * 100}%`}
-              x2="100%" y2={`${(i / 6) * 100}%`}
-              stroke="#928178" strokeWidth="0.8"
-            />
-          ))}
-        </svg>
-
-        {/* Radial glow */}
+        {/* Radial glow — burgundy center */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            background: "radial-gradient(ellipse 70% 60% at 50% 55%, rgba(84,19,43,0.45) 0%, transparent 70%)",
+            background: "radial-gradient(ellipse 80% 70% at 50% 60%, rgba(84,19,43,0.5) 0%, transparent 65%)",
+            display: "flex",
           }}
         />
 
-        {/* Left accent line */}
+        {/* Left accent bar */}
         <div
           style={{
             position: "absolute",
@@ -58,9 +37,54 @@ export default function OGImage() {
             top: 0,
             bottom: 0,
             width: 1,
-            backgroundColor: "rgba(84,19,43,0.5)",
+            backgroundColor: "rgba(84,19,43,0.6)",
+            display: "flex",
           }}
         />
+
+        {/* Top line */}
+        <div
+          style={{
+            position: "absolute",
+            top: 72,
+            left: 0,
+            right: 0,
+            height: 1,
+            backgroundColor: "rgba(146,129,120,0.12)",
+            display: "flex",
+          }}
+        />
+
+        {/* Bottom line */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 72,
+            left: 0,
+            right: 0,
+            height: 1,
+            backgroundColor: "rgba(146,129,120,0.12)",
+            display: "flex",
+          }}
+        />
+
+        {/* Large A watermark */}
+        <div
+          style={{
+            position: "absolute",
+            right: -60,
+            top: "50%",
+            transform: "translateY(-50%)",
+            fontSize: 520,
+            fontFamily: "serif",
+            fontWeight: 300,
+            color: "rgba(84,19,43,0.07)",
+            lineHeight: 1,
+            display: "flex",
+          }}
+        >
+          A
+        </div>
 
         {/* Content */}
         <div
@@ -70,30 +94,30 @@ export default function OGImage() {
             flexDirection: "column",
             justifyContent: "space-between",
             height: "100%",
-            padding: "72px 96px 72px 112px",
+            padding: "72px 100px 72px 116px",
           }}
         >
-          {/* Top — eyebrow */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#54132B" }} />
+          {/* Top — domain */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: "#54132B", display: "flex" }} />
             <span style={{
               fontFamily: "sans-serif",
-              fontSize: 13,
+              fontSize: 12,
               letterSpacing: "0.3em",
               textTransform: "uppercase",
-              color: "rgba(249,244,241,0.4)",
+              color: "rgba(249,244,241,0.35)",
             }}>
               autenticamente.com
             </span>
           </div>
 
-          {/* Middle — main content */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-            {/* Wordmark */}
+          {/* Middle */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+            {/* Brand */}
             <div style={{
               fontFamily: "serif",
-              fontSize: 20,
-              letterSpacing: "0.18em",
+              fontSize: 18,
+              letterSpacing: "0.2em",
               textTransform: "uppercase",
               color: "#54132B",
             }}>
@@ -103,66 +127,40 @@ export default function OGImage() {
             {/* Headline */}
             <div style={{
               fontFamily: "serif",
-              fontSize: 72,
+              fontSize: 68,
               fontWeight: 300,
-              lineHeight: 1.05,
+              lineHeight: 1.08,
               letterSpacing: "-0.02em",
               color: "#F9F4F1",
+              display: "flex",
+              flexDirection: "column",
             }}>
-              Reconecta contigo.<br />
-              <span style={{ color: "#54132B", fontStyle: "italic" }}>
-                Activa tu poder interno.
-              </span>
+              <span>Reconecta contigo.</span>
+              <span style={{ color: "#7A2040", fontStyle: "italic" }}>Activa tu poder interno.</span>
             </div>
 
             {/* Tagline */}
             <div style={{
               fontFamily: "sans-serif",
-              fontSize: 18,
-              lineHeight: 1.6,
-              color: "rgba(249,244,241,0.5)",
-              maxWidth: 640,
+              fontSize: 17,
+              lineHeight: 1.55,
+              color: "rgba(249,244,241,0.45)",
+              maxWidth: 580,
             }}>
-              Plataforma de desarrollo humano con conferencias, podcast, devocionales y recursos — por Dra. Liset Valencia
+              Plataforma de desarrollo humano — conferencias, podcast, devocionales y recursos. Por Dra. Liset Valencia.
             </div>
           </div>
 
-          {/* Bottom — meta */}
-          <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-            {["Conferencias", "Podcast", "Devocionales", "Biblioteca"].map((item, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                {i > 0 && (
-                  <div style={{ width: 3, height: 3, borderRadius: "50%", backgroundColor: "rgba(146,129,120,0.4)" }} />
-                )}
-                <span style={{
-                  fontFamily: "sans-serif",
-                  fontSize: 12,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  color: "rgba(249,244,241,0.35)",
-                }}>
-                  {item}
-                </span>
-              </div>
-            ))}
+          {/* Bottom — categories */}
+          <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
+            <span style={{ fontFamily: "sans-serif", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(249,244,241,0.3)" }}>Conferencias</span>
+            <div style={{ width: 3, height: 3, borderRadius: "50%", backgroundColor: "rgba(146,129,120,0.35)", display: "flex" }} />
+            <span style={{ fontFamily: "sans-serif", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(249,244,241,0.3)" }}>Podcast</span>
+            <div style={{ width: 3, height: 3, borderRadius: "50%", backgroundColor: "rgba(146,129,120,0.35)", display: "flex" }} />
+            <span style={{ fontFamily: "sans-serif", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(249,244,241,0.3)" }}>Devocionales</span>
+            <div style={{ width: 3, height: 3, borderRadius: "50%", backgroundColor: "rgba(146,129,120,0.35)", display: "flex" }} />
+            <span style={{ fontFamily: "sans-serif", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(249,244,241,0.3)" }}>Biblioteca</span>
           </div>
-        </div>
-
-        {/* Right decorative element — large watermark */}
-        <div style={{
-          position: "absolute",
-          right: -40,
-          top: "50%",
-          transform: "translateY(-50%)",
-          fontFamily: "serif",
-          fontSize: 420,
-          fontWeight: 300,
-          color: "rgba(84,19,43,0.06)",
-          lineHeight: 1,
-          userSelect: "none",
-          pointerEvents: "none",
-        }}>
-          A
         </div>
       </div>
     ),

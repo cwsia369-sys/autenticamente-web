@@ -1168,14 +1168,6 @@ export default function HomePage() {
             className="absolute inset-0 pointer-events-none"
             style={{ background: "linear-gradient(140deg, transparent 50%, rgba(84,19,43,0.22) 100%)" }}
           />
-          {/* Vignette radial detrás del texto "Porque sanar no es calma" — mejora legibilidad sin dañar la imagen */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse 520px 420px at 82% 52%, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.32) 28%, rgba(0,0,0,0.14) 55%, transparent 78%)",
-            }}
-          />
           {/* Frase — centrada verticalmente en la zona derecha de la imagen */}
           <div
             className="absolute z-10 text-center"

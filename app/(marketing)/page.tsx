@@ -1318,6 +1318,62 @@ export default function HomePage() {
             style={{ background: "linear-gradient(to top, rgba(249,244,241,1) 0%, rgba(249,244,241,0.1) 45%, transparent 100%)" }}
           />
         </div>
+
+        {/* Scroll indicator — bottom center, subtle bounce */}
+        <button
+          onClick={() => {
+            const heroSection = document.querySelector("section");
+            const next = heroSection?.nextElementSibling as HTMLElement | null;
+            if (next) {
+              window.scrollTo({ top: next.offsetTop - 80, behavior: "smooth" });
+            } else {
+              window.scrollBy({ top: window.innerHeight - 100, behavior: "smooth" });
+            }
+          }}
+          aria-label={lang === "es" ? "Desplazar hacia abajo" : "Scroll down"}
+          className="hidden lg:flex absolute left-1/2 -translate-x-1/2 z-20 flex-col items-center gap-2 group"
+          style={{
+            bottom: "32px",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            animation: "scrollIndicatorFade 1.6s ease-out 1.2s both",
+          }}
+        >
+          <span
+            className="font-body uppercase tracking-[0.28em] transition-opacity duration-300 group-hover:opacity-100"
+            style={{ fontSize: "9px", color: "rgba(0,0,0,0.42)", opacity: 0.7 }}
+          >
+            {lang === "es" ? "Descubre" : "Discover"}
+          </span>
+          <span
+            className="flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+            style={{
+              width: "38px",
+              height: "38px",
+              borderRadius: "50%",
+              border: "1px solid rgba(84,19,43,0.25)",
+              backgroundColor: "rgba(255,255,255,0.4)",
+              backdropFilter: "blur(4px)",
+              animation: "scrollBounce 2.2s ease-in-out infinite",
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5L7 9L11 5" stroke="#54132B" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+        </button>
+
+        <style jsx>{`
+          @keyframes scrollBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+          }
+          @keyframes scrollIndicatorFade {
+            0% { opacity: 0; transform: translate(-50%, 12px); }
+            100% { opacity: 1; transform: translate(-50%, 0); }
+          }
+        `}</style>
       </section>
 
       {/* ══════════════════════ PILARES — Minimal, editorial, premium ══════════ */}
